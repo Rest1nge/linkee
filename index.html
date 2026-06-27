@@ -1,903 +1,623 @@
-
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
-    <title>Мои ссылки · LinkTree</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои ссылки</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --bg: #0f0f0f;
+            --card: #1a1a1a;
+            --text: #ffffff;
+            --sub: #aaaaaa;
+            --btn: #2a2a2a;
+            --btn-hover: #3a3a3a;
+            --accent: #7289da;
+            --border: #2a2a2a;
+            --input: #111;
         }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f7fb;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             padding: 20px;
-            background-image: radial-gradient(circle at 10% 20%, rgba(0, 150, 255, 0.03) 0%, transparent 50%);
-            transition: background 0.2s;
         }
-
-        .card {
-            max-width: 500px;
+        .container {
             width: 100%;
-            background: #ffffff;
-            border-radius: 36px;
-            padding: 32px 24px 28px;
-            box-shadow: 0 20px 60px rgba(0, 20, 40, 0.08), 0 8px 20px rgba(0, 0, 0, 0.02);
-            transition: box-shadow 0.25s ease, background 0.2s;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-        }
-
-        .card:hover {
-            box-shadow: 0 30px 70px rgba(0, 20, 40, 0.10);
-        }
-
-        /* ——— Профиль (редактируемый) ——— */
-        .profile {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 24px;
-            position: relative;
-        }
-
-        .avatar-wrapper {
-            position: relative;
-            margin-bottom: 12px;
-        }
-
-        .avatar {
-            width: 96px;
-            height: 96px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #eef2f6, #e0e7ef);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 44px;
-            font-weight: 500;
-            color: #1e2b3c;
-            box-shadow: 0 6px 14px rgba(0, 0, 0, 0.02);
-            border: 3px solid white;
-            transition: transform 0.2s ease;
-            user-select: none;
-            cursor: default;
-        }
-
-        .avatar-edit-btn {
-            position: absolute;
-            bottom: -4px;
-            right: -4px;
-            background: #eef3fa;
-            border: 2px solid white;
-            border-radius: 30px;
-            width: 34px;
-            height: 34px;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: 0.15s;
-            color: #1f3349;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        }
-        .avatar-edit-btn:hover {
-            background: #dce6f2;
-            transform: scale(1.05);
-        }
-
-        .name-input,
-        .bio-input {
-            border: none;
-            background: transparent;
+            max-width: 480px;
             text-align: center;
-            font-family: inherit;
-            color: #0b1a2b;
-            transition: border 0.2s, background 0.2s;
-            border-radius: 12px;
-            padding: 4px 12px;
-            width: 100%;
-            max-width: 280px;
         }
-
-        .name-input {
+        /* Аватар и имя */
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 16px;
+            object-fit: cover;
+            display: block;
+            border: 3px solid var(--border);
+            background: var(--card);
+        }
+        .name {
             font-size: 24px;
-            font-weight: 600;
-            letter-spacing: -0.3px;
-            margin-bottom: 2px;
+            font-weight: 700;
+            margin-bottom: 4px;
         }
-
-        .bio-input {
-            font-size: 15px;
-            font-weight: 400;
-            color: #5d6f83;
-            max-width: 300px;
-            line-height: 1.4;
+        .bio {
+            color: var(--sub);
+            font-size: 14px;
+            margin-bottom: 28px;
+            white-space: pre-line;
         }
-
-        .name-input:focus,
-        .bio-input:focus {
-            outline: 2px solid #c0d0e5;
-            outline-offset: 2px;
-            background: #f5f9ff;
-        }
-
-        .name-input::placeholder,
-        .bio-input::placeholder {
-            color: #a0b4ca;
-            font-weight: 400;
-        }
-
-        /* ——— Ссылки (редактируемые) ——— */
+        /* Ссылки */
         .links {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin: 20px 0 24px;
+            gap: 12px;
         }
-
-        .link-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            background: #f8faff;
-            padding: 10px 16px 10px 18px;
-            border-radius: 60px;
-            border: 1px solid #eef3fa;
-            transition: all 0.18s ease;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.01);
-        }
-
-        .link-item:hover {
-            background: #ffffff;
-            border-color: #cbd8e8;
-            box-shadow: 0 6px 16px rgba(0, 40, 80, 0.06);
-        }
-
-        .link-fields {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex: 1;
-            min-width: 0;
-        }
-
-        .link-icon-input {
-            font-size: 20px;
-            width: 34px;
-            text-align: center;
-            border: none;
-            background: transparent;
-            font-family: inherit;
-            padding: 4px 0;
-            border-radius: 30px;
-            transition: 0.15s;
-        }
-        .link-icon-input:focus {
-            outline: 2px solid #c0d0e5;
-            background: #f5f9ff;
-        }
-
-        .link-label-input {
-            border: none;
-            background: transparent;
-            font-family: inherit;
-            font-weight: 500;
-            font-size: 15px;
-            color: #0b1a2b;
-            padding: 6px 8px;
-            border-radius: 30px;
-            flex: 1;
-            min-width: 60px;
-        }
-        .link-label-input:focus {
-            outline: 2px solid #c0d0e5;
-            background: #f5f9ff;
-        }
-
-        .link-url-input {
-            border: none;
-            background: transparent;
-            font-family: inherit;
-            font-size: 13px;
-            color: #3f5a77;
-            padding: 6px 8px;
-            border-radius: 30px;
-            flex: 1.2;
-            min-width: 80px;
-            font-weight: 400;
-        }
-        .link-url-input:focus {
-            outline: 2px solid #c0d0e5;
-            background: #f5f9ff;
-        }
-
-        .link-actions {
-            display: flex;
-            gap: 4px;
-            flex-shrink: 0;
-        }
-
         .link-btn {
-            background: transparent;
+            display: block;
+            width: 100%;
+            padding: 14px 20px;
+            background: var(--btn);
+            color: var(--text);
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: 1px solid var(--border);
+            text-align: center;
+            word-break: break-word;
+        }
+        .link-btn:hover {
+            background: var(--btn-hover);
+            border-color: var(--accent);
+            transform: translateY(-1px);
+        }
+        /* Кнопка входа в админку */
+        .admin-entry {
+            margin-top: 32px;
+            font-size: 12px;
+            color: var(--sub);
+            cursor: pointer;
+            background: none;
+            border: none;
+            opacity: 0.4;
+            transition: opacity 0.2s;
+        }
+        .admin-entry:hover { opacity: 1; color: var(--accent); }
+        /* Админ-панель */
+        .admin-panel {
+            display: none;
+            margin-top: 24px;
+            text-align: left;
+            background: var(--card);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--border);
+        }
+        .admin-panel.active { display: block; }
+        .admin-panel h3 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 18px;
+            color: var(--accent);
+        }
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--sub);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            background: var(--input);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+        }
+        .form-group textarea { min-height: 50px; }
+        .link-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+        .link-row input {
+            flex: 1;
+            padding: 8px 10px;
+            background: var(--input);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-size: 13px;
+        }
+        .link-row .del-btn {
+            background: #3a1010;
+            color: #ff6b6b;
             border: none;
             width: 32px;
             height: 32px;
-            border-radius: 30px;
-            font-size: 18px;
+            border-radius: 6px;
             cursor: pointer;
-            transition: 0.15s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #5d6f83;
+            font-size: 16px;
+            flex-shrink: 0;
+            transition: background 0.2s;
         }
-        .link-btn:hover {
-            background: #e6edf8;
-            color: #0b1a2b;
-        }
-        .link-btn.danger:hover {
-            background: #ffe6e6;
-            color: #b33;
-        }
-
-        .add-link-btn {
-            background: #eef3fa;
-            border: 1px dashed #bcccdb;
-            border-radius: 60px;
-            padding: 12px 20px;
+        .link-row .del-btn:hover { background: #5a1818; }
+        .btn {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s;
             font-family: inherit;
-            font-weight: 500;
-            font-size: 15px;
-            color: #1f3349;
+        }
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+            width: 100%;
+        }
+        .btn-primary:hover { filter: brightness(1.15); }
+        .btn-outline {
+            background: transparent;
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            margin-top: 8px;
+            width: 100%;
+        }
+        .btn-outline:hover { background: var(--accent); color: #fff; }
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+            background: var(--btn);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 6px;
             cursor: pointer;
-            transition: 0.15s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            width: 100%;
             margin-top: 4px;
         }
-        .add-link-btn:hover {
-            background: #e2eaf5;
-            border-color: #8aa3c0;
+        .btn-small:hover { background: var(--btn-hover); }
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 16px 0;
         }
-
-        /* ——— Нижний блок ——— */
-        .footer {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 16px;
-            margin-top: 6px;
-        }
-
+        /* Соцсети */
         .social-row {
             display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .social-link {
-            display: inline-flex;
+            gap: 8px;
             align-items: center;
+            margin-bottom: 8px;
+        }
+        .social-row select {
+            width: 80px;
+            padding: 8px;
+            background: var(--input);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+        .social-row input {
+            flex: 1;
+            padding: 8px 10px;
+            background: var(--input);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text);
+            font-size: 13px;
+        }
+        .social-icons {
+            display: flex;
             justify-content: center;
-            width: 48px;
-            height: 48px;
-            border-radius: 30px;
-            background: #f2f6fd;
-            color: #1f3349;
+            gap: 16px;
+            margin-top: 20px;
+        }
+        .social-icon {
+            color: var(--sub);
             font-size: 22px;
             text-decoration: none;
-            transition: all 0.2s ease;
-            border: 1px solid transparent;
+            transition: color 0.2s;
         }
-        .social-link:hover {
-            background: #e6edf8;
-            border-color: #cbd8e8;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.02);
-        }
-
-        .credit {
-            font-size: 13px;
-            font-weight: 400;
-            color: #8b9bb0;
-            border-top: 1px solid #edf2f9;
-            padding-top: 16px;
-            width: 100%;
-            text-align: center;
-        }
-        .credit a {
-            color: #3f5a77;
-            text-decoration: none;
-            font-weight: 500;
-            cursor: pointer;
-        }
-        .credit a:hover {
-            color: #0b1a2b;
-            text-decoration: underline;
-        }
-
-        /* ——— тёмная тема ——— */
-        @media (prefers-color-scheme: dark) {
-            body {
-                background: #111820;
-                background-image: radial-gradient(circle at 10% 20%, rgba(30, 100, 200, 0.06) 0%, transparent 50%);
-            }
-            .card {
-                background: #1a2533;
-                border-color: #2f3d4f;
-                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            }
-            .card:hover {
-                box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
-            }
-            .avatar {
-                background: #2b3a4e;
-                color: #eef4fc;
-                border-color: #2f3f55;
-            }
-            .name-input {
-                color: #edf4fc;
-            }
-            .bio-input {
-                color: #a5b9d0;
-            }
-            .name-input:focus,
-            .bio-input:focus,
-            .link-icon-input:focus,
-            .link-label-input:focus,
-            .link-url-input:focus {
-                background: #253544;
-                outline-color: #4a6180;
-            }
-            .link-item {
-                background: #22303f;
-                border-color: #32445a;
-            }
-            .link-item:hover {
-                background: #2b3d53;
-                border-color: #4a6180;
-                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
-            }
-            .link-label-input {
-                color: #e9f0f8;
-            }
-            .link-url-input {
-                color: #b0c8e5;
-            }
-            .link-btn {
-                color: #9ab0cc;
-            }
-            .link-btn:hover {
-                background: #314b63;
-                color: #eef4fc;
-            }
-            .link-btn.danger:hover {
-                background: #4a2a2a;
-                color: #f88;
-            }
-            .add-link-btn {
-                background: #263649;
-                border-color: #40566e;
-                color: #d0def0;
-            }
-            .add-link-btn:hover {
-                background: #314b63;
-                border-color: #5a7a9a;
-            }
-            .social-link {
-                background: #263649;
-                color: #cfdef5;
-            }
-            .social-link:hover {
-                background: #31495f;
-                border-color: #4a6180;
-            }
-            .credit {
-                color: #7a91ab;
-                border-top-color: #2f4057;
-            }
-            .credit a {
-                color: #b4cbeb;
-            }
-            .credit a:hover {
-                color: #ffffff;
-            }
-            .avatar-edit-btn {
-                background: #2f3f55;
-                border-color: #1a2533;
-                color: #d0def0;
-            }
-            .avatar-edit-btn:hover {
-                background: #405a78;
-            }
-        }
-
-        /* адаптив */
-        @media (max-width: 480px) {
-            .card {
-                padding: 24px 14px 20px;
-                border-radius: 28px;
-            }
-            .avatar {
-                width: 80px;
-                height: 80px;
-                font-size: 38px;
-            }
-            .name-input {
-                font-size: 22px;
-            }
-            .link-item {
-                padding: 8px 12px 8px 14px;
-                flex-wrap: wrap;
-            }
-            .link-fields {
-                flex-wrap: wrap;
-                gap: 4px;
-            }
-            .link-label-input {
-                min-width: 80px;
-                font-size: 14px;
-            }
-            .link-url-input {
-                min-width: 100px;
-                font-size: 12px;
-                flex: 1 1 100%;
-            }
-            .link-icon-input {
-                width: 28px;
-                font-size: 18px;
-            }
-        }
-
-        /* --- индикатор режима просмотра --- */
-        .view-mode-badge {
-            font-size: 12px;
-            background: #eef3fa;
-            padding: 4px 14px;
+        .social-icon:hover { color: var(--accent); }
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2ecc71;
+            color: #000;
+            padding: 12px 24px;
             border-radius: 30px;
-            color: #3f5a77;
-            margin-bottom: 12px;
-            display: inline-block;
-            border: 1px solid #dce4ed;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 14px;
+            z-index: 999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
         }
-        @media (prefers-color-scheme: dark) {
-            .view-mode-badge {
-                background: #263649;
-                border-color: #40566e;
-                color: #b0c8e5;
-            }
-        }
+        .toast.show { opacity: 1; }
     </style>
 </head>
 <body>
-    <div class="card" role="main">
 
-        <!-- ===== ПРОФИЛЬ (редактируемый) ===== -->
-        <div class="profile">
-            <div class="avatar-wrapper">
-                <div class="avatar" id="avatarDisplay">🌟</div>
-                <button class="avatar-edit-btn" id="avatarEditBtn" title="Изменить эмодзи">✎</button>
-            </div>
-            <input class="name-input" id="nameInput" type="text" value="Алексей Иванов" placeholder="Ваше имя" />
-            <input class="bio-input" id="bioInput" type="text" value="дизайнер · создаю полезное" placeholder="Краткая биография" />
-        </div>
-
-        <!-- ===== СПИСОК ССЫЛОК (редактируемый) ===== -->
-        <div class="links" id="linksContainer">
-            <!-- ссылки будут добавляться сюда через JS -->
-        </div>
-
-        <button class="add-link-btn" id="addLinkBtn">＋ Добавить ссылку</button>
-
-        <!-- ===== НИЖНИЙ БЛОК ===== -->
-        <div class="footer">
-            <div class="social-row">
-                <a href="#" class="social-link" target="_blank" rel="noopener">✈️</a>
-                <a href="#" class="social-link" target="_blank" rel="noopener">🐙</a>
-                <a href="#" class="social-link" target="_blank" rel="noopener">🎵</a>
-                <a href="#" class="social-link" target="_blank" rel="noopener">📘</a>
-            </div>
-            <div class="credit">
-                <span>🔒 </span>
-                <span id="modeIndicator" class="view-mode-badge">режим просмотра</span>
-                <br style="display: none;" id="modeBr" />
-                <span>✨ </span>
-                <a href="#" id="toggleModeBtn" style="cursor:pointer;">🔑 войти как владелец</a>
-                <span> · </span>
-                <a href="#" id="resetDefaultBtn" style="cursor:pointer;">сбросить</a>
-                <span> · </span>
-                <a href="#" id="saveStateBtn" style="cursor:pointer;">💾 сохранить</a>
-            </div>
-        </div>
+    <div class="container" id="publicView">
+        <!-- Публичный вид -->
+        <img class="avatar" id="pubAvatar" src="" alt="Avatar">
+        <div class="name" id="pubName"></div>
+        <div class="bio" id="pubBio"></div>
+        <div class="links" id="pubLinks"></div>
+        <div class="social-icons" id="pubSocials"></div>
+        <button class="admin-entry" onclick="toggleAdmin()" title="Админка">🔑</button>
     </div>
 
+    <!-- Админ-панель -->
+    <div class="admin-panel" id="adminPanel">
+        <h3>⚙️ Редактирование</h3>
+
+        <div class="form-group">
+            <label>Ссылка на аватар</label>
+            <input type="text" id="editAvatar" placeholder="https://...">
+        </div>
+        <div class="form-group">
+            <label>Имя</label>
+            <input type="text" id="editName" placeholder="Твоё имя">
+        </div>
+        <div class="form-group">
+            <label>Описание / Био</label>
+            <textarea id="editBio" placeholder="Пару слов о себе"></textarea>
+        </div>
+
+        <hr class="divider">
+        <label style="font-size:12px;color:var(--sub);text-transform:uppercase;letter-spacing:0.5px;">Ссылки</label>
+        <div id="editLinks"></div>
+        <button class="btn-small" onclick="addLink()">+ Добавить ссылку</button>
+
+        <hr class="divider">
+        <label style="font-size:12px;color:var(--sub);text-transform:uppercase;letter-spacing:0.5px;">Соцсети (иконки)</label>
+        <div id="editSocials"></div>
+        <button class="btn-small" onclick="addSocial()">+ Добавить соцсеть</button>
+
+        <button class="btn-primary" style="margin-top:20px;" onclick="saveAll()">💾 Сохранить</button>
+        <button class="btn-outline" onclick="exportJSON()">📤 Экспорт JSON</button>
+        <button class="btn-outline" onclick="importJSON()">📥 Импорт JSON</button>
+        <button class="btn-outline" style="border-color:#ff6b6b;color:#ff6b6b;" onclick="resetAll()">🗑 Сбросить всё</button>
+        <p style="font-size:11px;color:var(--sub);text-align:center;margin-top:8px;">
+            Данные хранятся в localStorage твоего браузера
+        </p>
+    </div>
+
+    <div class="toast" id="toast">Сохранено!</div>
+
+    <!-- Font Awesome для иконок соцсетей -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
     <script>
-        (function() {
-            // --- начальные данные (пример) ---
-            const DEFAULT_LINKS = [
-                { icon: '🌐', label: 'Мой сайт', url: 'https://example.com' },
-                { icon: '📸', label: 'Instagram', url: 'https://instagram.com' },
-                { icon: '🐦', label: 'Twitter / X', url: 'https://twitter.com' },
-                { icon: '💼', label: 'LinkedIn', url: 'https://linkedin.com' },
-                { icon: '🎬', label: 'YouTube', url: 'https://youtube.com' },
-                { icon: '📧', label: 'Написать письмо', url: 'mailto:hello@example.com' }
-            ];
+        // ===== ДАННЫЕ ПО УМОЛЧАНИЮ =====
+        const defaultData = {
+            avatar: '',
+            name: 'Твоё Имя',
+            bio: 'Здесь может быть твоё описание.\nРасскажи о себе в паре строк.',
+            links: [
+                { title: 'Мой Telegram', url: 'https://t.me/username' },
+                { title: 'YouTube канал', url: 'https://youtube.com/@username' },
+                { title: 'GitHub', url: 'https://github.com/username' },
+            ],
+            socials: [
+                { platform: 'telegram', url: 'https://t.me/username' },
+                { platform: 'youtube', url: 'https://youtube.com/@username' },
+                { platform: 'github', url: 'https://github.com/username' },
+            ]
+        };
 
-            // --- DOM-элементы ---
-            const linksContainer = document.getElementById('linksContainer');
-            const addLinkBtn = document.getElementById('addLinkBtn');
-            const nameInput = document.getElementById('nameInput');
-            const bioInput = document.getElementById('bioInput');
-            const avatarDisplay = document.getElementById('avatarDisplay');
-            const avatarEditBtn = document.getElementById('avatarEditBtn');
-            const resetBtn = document.getElementById('resetDefaultBtn');
-            const saveBtn = document.getElementById('saveStateBtn');
-            const toggleModeBtn = document.getElementById('toggleModeBtn');
-            const modeIndicator = document.getElementById('modeIndicator');
+        // Доступные платформы для соцсетей (Font Awesome классы)
+        const platforms = [
+            { value: 'telegram', label: 'Telegram', icon: 'fa-telegram' },
+            { value: 'youtube', label: 'YouTube', icon: 'fa-youtube' },
+            { value: 'github', label: 'GitHub', icon: 'fa-github' },
+            { value: 'instagram', label: 'Instagram', icon: 'fa-instagram' },
+            { value: 'twitter', label: 'Twitter/X', icon: 'fa-x-twitter' },
+            { value: 'twitch', label: 'Twitch', icon: 'fa-twitch' },
+            { value: 'discord', label: 'Discord', icon: 'fa-discord' },
+            { value: 'tiktok', label: 'TikTok', icon: 'fa-tiktok' },
+            { value: 'linkedin', label: 'LinkedIn', icon: 'fa-linkedin' },
+            { value: 'spotify', label: 'Spotify', icon: 'fa-spotify' },
+            { value: 'vk', label: 'VK', icon: 'fa-vk' },
+            { value: 'website', label: 'Сайт', icon: 'fa-globe' },
+            { value: 'email', label: 'Email', icon: 'fa-envelope' },
+        ];
 
-            // --- состояние ---
-            let links = [];
-            let avatarEmoji = '🌟';
-            let isOwner = false;  // по умолчанию — режим просмотра
+        let data = { ...defaultData };
 
-            // --- загрузка из localStorage ---
-            function loadState() {
+        // ===== ЗАГРУЗКА ИЗ localStorage =====
+        function loadData() {
+            const saved = localStorage.getItem('mylinktree_data');
+            if (saved) {
                 try {
-                    const saved = localStorage.getItem('linktree_data');
-                    if (saved) {
-                        const data = JSON.parse(saved);
-                        if (data.links && Array.isArray(data.links)) {
-                            links = data.links;
-                        } else {
-                            links = JSON.parse(JSON.stringify(DEFAULT_LINKS));
-                        }
-                        if (data.avatar) avatarEmoji = data.avatar;
-                        if (data.name !== undefined) nameInput.value = data.name;
-                        if (data.bio !== undefined) bioInput.value = data.bio;
-                        // загружаем режим владельца (по умолчанию false)
-                        if (data.isOwner === true) {
-                            isOwner = true;
-                        } else {
-                            isOwner = false;
-                        }
-                        return;
+                    const parsed = JSON.parse(saved);
+                    data = { ...defaultData, ...parsed };
+                    // Убедимся что массивы есть
+                    if (!Array.isArray(data.links)) data.links = [...defaultData.links];
+                    if (!Array.isArray(data.socials)) data.socials = [...defaultData.socials];
+                } catch (e) {
+                    data = { ...defaultData };
+                }
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('mylinktree_data', JSON.stringify(data));
+        }
+
+        // ===== ОТРИСОВКА ПУБЛИЧНОЙ ЧАСТИ =====
+        function renderPublic() {
+            document.getElementById('pubAvatar').src = data.avatar || 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23333" width="100" height="100"/><text x="50" y="58" text-anchor="middle" fill="%23777" font-size="40" font-family="sans-serif">?</text></svg>';
+            document.getElementById('pubName').textContent = data.name || 'Имя';
+            document.getElementById('pubBio').textContent = data.bio || '';
+
+            // Ссылки
+            const linksDiv = document.getElementById('pubLinks');
+            linksDiv.innerHTML = '';
+            if (data.links && data.links.length > 0) {
+                data.links.forEach(link => {
+                    if (link.title || link.url) {
+                        const a = document.createElement('a');
+                        a.className = 'link-btn';
+                        a.href = link.url || '#';
+                        a.textContent = link.title || 'Ссылка';
+                        a.target = '_blank';
+                        a.rel = 'noopener noreferrer';
+                        linksDiv.appendChild(a);
                     }
-                } catch (_) { /* ignore */ }
-                // если нет сохранения — дефолт
-                links = JSON.parse(JSON.stringify(DEFAULT_LINKS));
-                avatarEmoji = '🌟';
-                nameInput.value = 'Алексей Иванов';
-                bioInput.value = 'дизайнер · создаю полезное';
-                isOwner = false;
+                });
             }
 
-            // --- сохранение в localStorage ---
-            function saveState() {
-                // перед сохранением собираем данные из полей ввода (если они есть)
-                const iconInputs = document.querySelectorAll('.link-icon-input');
-                const labelInputs = document.querySelectorAll('.link-label-input');
-                const urlInputs = document.querySelectorAll('.link-url-input');
-                for (let i = 0; i < links.length; i++) {
-                    if (iconInputs[i]) links[i].icon = iconInputs[i].value;
-                    if (labelInputs[i]) links[i].label = labelInputs[i].value;
-                    if (urlInputs[i]) links[i].url = urlInputs[i].value;
-                }
-                const data = {
-                    links: links,
-                    avatar: avatarEmoji,
-                    name: nameInput.value,
-                    bio: bioInput.value,
-                    isOwner: isOwner,
+            // Соцсети
+            const socialsDiv = document.getElementById('pubSocials');
+            socialsDiv.innerHTML = '';
+            if (data.socials && data.socials.length > 0) {
+                data.socials.forEach(s => {
+                    if (s.url) {
+                        const plat = platforms.find(p => p.value === s.platform) || { icon: 'fa-link' };
+                        const a = document.createElement('a');
+                        a.className = 'social-icon';
+                        a.href = s.url;
+                        a.target = '_blank';
+                        a.rel = 'noopener noreferrer';
+                        a.innerHTML = `<i class="fa-brands ${plat.icon}"></i>`;
+                        a.title = s.platform;
+                        socialsDiv.appendChild(a);
+                    }
+                });
+            }
+        }
+
+        // ===== ОТРИСОВКА АДМИНКИ =====
+        function renderAdmin() {
+            document.getElementById('editAvatar').value = data.avatar || '';
+            document.getElementById('editName').value = data.name || '';
+            document.getElementById('editBio').value = data.bio || '';
+
+            // Ссылки
+            const editLinksDiv = document.getElementById('editLinks');
+            editLinksDiv.innerHTML = '';
+            if (!data.links) data.links = [];
+            data.links.forEach((link, i) => {
+                const row = document.createElement('div');
+                row.className = 'link-row';
+                row.innerHTML = `
+                    <input type="text" placeholder="Название" value="${escapeAttr(link.title || '')}" data-index="${i}" data-field="title">
+                    <input type="text" placeholder="URL" value="${escapeAttr(link.url || '')}" data-index="${i}" data-field="url">
+                    <button class="del-btn" onclick="deleteLink(${i})" title="Удалить">×</button>
+                `;
+                editLinksDiv.appendChild(row);
+            });
+
+            // Соцсети
+            const editSocialsDiv = document.getElementById('editSocials');
+            editSocialsDiv.innerHTML = '';
+            if (!data.socials) data.socials = [];
+            data.socials.forEach((s, i) => {
+                const row = document.createElement('div');
+                row.className = 'social-row';
+                let options = platforms.map(p =>
+                    `<option value="${p.value}" ${s.platform === p.value ? 'selected' : ''}>${p.label}</option>`
+                ).join('');
+                row.innerHTML = `
+                    <select data-index="${i}" data-field="platform">${options}</select>
+                    <input type="text" placeholder="URL" value="${escapeAttr(s.url || '')}" data-index="${i}" data-field="url">
+                    <button class="del-btn" onclick="deleteSocial(${i})" title="Удалить">×</button>
+                `;
+                editSocialsDiv.appendChild(row);
+            });
+
+            // Слушатели для автосохранения при изменении полей
+            document.querySelectorAll('#editLinks input, #editSocials input, #editSocials select').forEach(el => {
+                el.addEventListener('input', autoSaveField);
+            });
+            ['editAvatar', 'editName', 'editBio'].forEach(id => {
+                document.getElementById(id).addEventListener('input', autoSaveField);
+            });
+        }
+
+        function escapeAttr(str) {
+            return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        function autoSaveField(e) {
+            const el = e.target;
+            const index = el.dataset.index;
+            const field = el.dataset.field;
+
+            if (index !== undefined && field) {
+                // Это поле внутри массива links или socials
+                const parent = el.closest('#editLinks') ? 'links' : 'socials';
+                if (!data[parent][index]) return;
+                data[parent][index][field] = el.value;
+            } else if (el.id === 'editAvatar') {
+                data.avatar = el.value;
+            } else if (el.id === 'editName') {
+                data.name = el.value;
+            } else if (el.id === 'editBio') {
+                data.bio = el.value;
+            }
+            saveData();
+            renderPublic();
+        }
+
+        function addLink() {
+            if (!data.links) data.links = [];
+            data.links.push({ title: '', url: '' });
+            saveData();
+            renderPublic();
+            renderAdmin();
+        }
+
+        function deleteLink(index) {
+            data.links.splice(index, 1);
+            saveData();
+            renderPublic();
+            renderAdmin();
+        }
+
+        function addSocial() {
+            if (!data.socials) data.socials = [];
+            data.socials.push({ platform: 'telegram', url: '' });
+            saveData();
+            renderPublic();
+            renderAdmin();
+        }
+
+        function deleteSocial(index) {
+            data.socials.splice(index, 1);
+            saveData();
+            renderPublic();
+            renderAdmin();
+        }
+
+        function saveAll() {
+            // Собираем всё из полей
+            data.avatar = document.getElementById('editAvatar').value;
+            data.name = document.getElementById('editName').value;
+            data.bio = document.getElementById('editBio').value;
+
+            // Ссылки
+            const linkRows = document.querySelectorAll('#editLinks .link-row');
+            data.links = [];
+            linkRows.forEach(row => {
+                const inputs = row.querySelectorAll('input');
+                data.links.push({
+                    title: inputs[0].value,
+                    url: inputs[1].value
+                });
+            });
+
+            // Соцсети
+            const socialRows = document.querySelectorAll('#editSocials .social-row');
+            data.socials = [];
+            socialRows.forEach(row => {
+                const select = row.querySelector('select');
+                const input = row.querySelector('input');
+                data.socials.push({
+                    platform: select.value,
+                    url: input.value
+                });
+            });
+
+            saveData();
+            renderPublic();
+            showToast('✅ Сохранено!');
+        }
+
+        function toggleAdmin() {
+            const panel = document.getElementById('adminPanel');
+            panel.classList.toggle('active');
+            if (panel.classList.contains('active')) {
+                renderAdmin();
+                panel.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function exportJSON() {
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'mylinktree_backup.json';
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('📤 Экспортировано!');
+        }
+
+        function importJSON() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    try {
+                        const imported = JSON.parse(ev.target.result);
+                        data = { ...defaultData, ...imported };
+                        if (!Array.isArray(data.links)) data.links = [];
+                        if (!Array.isArray(data.socials)) data.socials = [];
+                        saveData();
+                        renderPublic();
+                        renderAdmin();
+                        showToast('📥 Импортировано!');
+                    } catch (err) {
+                        showToast('❌ Ошибка в JSON-файле');
+                    }
                 };
-                localStorage.setItem('linktree_data', JSON.stringify(data));
-                // визуальный фидбек
-                saveBtn.style.transition = 'color 0.1s';
-                saveBtn.style.color = '#2b7a4b';
-                setTimeout(() => { saveBtn.style.color = ''; }, 400);
+                reader.readAsText(file);
+            };
+            input.click();
+        }
+
+        function resetAll() {
+            if (confirm('Точно сбросить все данные к значениям по умолчанию?')) {
+                data = { ...defaultData };
+                saveData();
+                renderPublic();
+                renderAdmin();
+                showToast('🗑 Сброшено!');
             }
+        }
 
-            // --- обновление интерфейса в зависимости от режима (владелец / просмотр) ---
-            function updateModeUI() {
-                const editableFields = [
-                    ...document.querySelectorAll('.link-icon-input'),
-                    ...document.querySelectorAll('.link-label-input'),
-                    ...document.querySelectorAll('.link-url-input'),
-                    nameInput, bioInput, avatarEditBtn, addLinkBtn,
-                ];
-                // кнопки действий (↑ ↓ ✕) тоже блокируем
-                const actionBtns = document.querySelectorAll('.link-btn');
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
 
-                if (isOwner) {
-                    // Включаем редактирование
-                    editableFields.forEach(el => {
-                        if (el) el.disabled = false;
-                        if (el && el.tagName === 'INPUT') {
-                            el.style.opacity = '1';
-                            el.style.cursor = 'text';
-                        }
-                    });
-                    actionBtns.forEach(btn => {
-                        btn.style.pointerEvents = 'auto';
-                        btn.style.opacity = '1';
-                    });
-                    addLinkBtn.style.pointerEvents = 'auto';
-                    addLinkBtn.style.opacity = '1';
-                    modeIndicator.textContent = '🔑 режим владельца';
-                    modeIndicator.style.background = '#d4e2f5';
-                    modeIndicator.style.color = '#1f3b5c';
-                    toggleModeBtn.textContent = '👁️ перейти в просмотр';
-                } else {
-                    // Блокируем редактирование
-                    editableFields.forEach(el => {
-                        if (el) el.disabled = true;
-                        if (el && el.tagName === 'INPUT') {
-                            el.style.opacity = '0.7';
-                            el.style.cursor = 'default';
-                        }
-                    });
-                    actionBtns.forEach(btn => {
-                        btn.style.pointerEvents = 'none';
-                        btn.style.opacity = '0.4';
-                    });
-                    addLinkBtn.style.pointerEvents = 'none';
-                    addLinkBtn.style.opacity = '0.5';
-                    modeIndicator.textContent = '👁️ режим просмотра';
-                    modeIndicator.style.background = '#eef3fa';
-                    modeIndicator.style.color = '#3f5a77';
-                    toggleModeBtn.textContent = '🔑 войти как владелец';
-                }
-                // Сохраняем состояние в localStorage при переключении
-                saveState();
-            }
-
-            // --- рендер всех ссылок ---
-            function renderLinks() {
-                linksContainer.innerHTML = '';
-                links.forEach((link, index) => {
-                    const item = document.createElement('div');
-                    item.className = 'link-item';
-
-                    const fields = document.createElement('div');
-                    fields.className = 'link-fields';
-
-                    const iconInput = document.createElement('input');
-                    iconInput.type = 'text';
-                    iconInput.className = 'link-icon-input';
-                    iconInput.value = link.icon || '🔗';
-                    iconInput.maxLength = 4;
-                    iconInput.placeholder = '🔗';
-                    iconInput.dataset.index = index;
-                    iconInput.dataset.field = 'icon';
-
-                    const labelInput = document.createElement('input');
-                    labelInput.type = 'text';
-                    labelInput.className = 'link-label-input';
-                    labelInput.value = link.label || 'Новая ссылка';
-                    labelInput.placeholder = 'Название';
-                    labelInput.dataset.index = index;
-                    labelInput.dataset.field = 'label';
-
-                    const urlInput = document.createElement('input');
-                    urlInput.type = 'text';
-                    urlInput.className = 'link-url-input';
-                    urlInput.value = link.url || 'https://';
-                    urlInput.placeholder = 'https://...';
-                    urlInput.dataset.index = index;
-                    urlInput.dataset.field = 'url';
-
-                    fields.appendChild(iconInput);
-                    fields.appendChild(labelInput);
-                    fields.appendChild(urlInput);
-
-                    const actions = document.createElement('div');
-                    actions.className = 'link-actions';
-
-                    const upBtn = document.createElement('button');
-                    upBtn.className = 'link-btn';
-                    upBtn.innerHTML = '↑';
-                    upBtn.title = 'Переместить вверх';
-                    upBtn.dataset.index = index;
-                    upBtn.dataset.action = 'up';
-
-                    const downBtn = document.createElement('button');
-                    downBtn.className = 'link-btn';
-                    downBtn.innerHTML = '↓';
-                    downBtn.title = 'Переместить вниз';
-                    downBtn.dataset.index = index;
-                    downBtn.dataset.action = 'down';
-
-                    const delBtn = document.createElement('button');
-                    delBtn.className = 'link-btn danger';
-                    delBtn.innerHTML = '✕';
-                    delBtn.title = 'Удалить ссылку';
-                    delBtn.dataset.index = index;
-                    delBtn.dataset.action = 'delete';
-
-                    actions.appendChild(upBtn);
-                    actions.appendChild(downBtn);
-                    actions.appendChild(delBtn);
-
-                    item.appendChild(fields);
-                    item.appendChild(actions);
-                    linksContainer.appendChild(item);
-
-                    // --- обработчики событий на полях ввода (обновление состояния) ---
-                    const updateLinkField = (e) => {
-                        if (!isOwner) return; // только владелец может менять
-                        const idx = parseInt(e.target.dataset.index);
-                        const field = e.target.dataset.field;
-                        if (isNaN(idx) || idx < 0 || idx >= links.length) return;
-                        links[idx][field] = e.target.value;
-                        saveState();
-                    };
-
-                    iconInput.addEventListener('input', updateLinkField);
-                    labelInput.addEventListener('input', updateLinkField);
-                    urlInput.addEventListener('input', updateLinkField);
-
-                    // обработчики кнопок (только для владельца)
-                    const actionHandler = (e) => {
-                        if (!isOwner) return;
-                        const idx = parseInt(e.currentTarget.dataset.index);
-                        const action = e.currentTarget.dataset.action;
-                        if (action === 'up' && idx > 0) {
-                            [links[idx], links[idx-1]] = [links[idx-1], links[idx]];
-                            renderLinks();
-                            saveState();
-                        } else if (action === 'down' && idx < links.length - 1) {
-                            [links[idx], links[idx+1]] = [links[idx+1], links[idx]];
-                            renderLinks();
-                            saveState();
-                        } else if (action === 'delete') {
-                            if (links.length > 1) {
-                                links.splice(idx, 1);
-                                renderLinks();
-                                saveState();
-                            } else {
-                                alert('Должна остаться хотя бы одна ссылка.');
-                            }
-                        }
-                    };
-
-                    upBtn.addEventListener('click', actionHandler);
-                    downBtn.addEventListener('click', actionHandler);
-                    delBtn.addEventListener('click', actionHandler);
-                });
-
-                // после рендера применяем режим UI
-                updateModeUI();
-            }
-
-            // --- добавить новую ссылку ---
-            function addLink() {
-                if (!isOwner) return;
-                links.push({ icon: '🔗', label: 'Новая ссылка', url: 'https://' });
-                renderLinks();
-                saveState();
-                const allLabels = document.querySelectorAll('.link-label-input');
-                if (allLabels.length) {
-                    allLabels[allLabels.length - 1].focus();
-                    allLabels[allLabels.length - 1].select();
-                }
-            }
-
-            // --- сброс к примеру ---
-            function resetToDefault() {
-                if (!isOwner) {
-                    alert('Только владелец может сбросить настройки.');
-                    return;
-                }
-                if (confirm('Сбросить все ссылки и профиль к примеру?')) {
-                    links = JSON.parse(JSON.stringify(DEFAULT_LINKS));
-                    avatarEmoji = '🌟';
-                    nameInput.value = 'Алексей Иванов';
-                    bioInput.value = 'дизайнер · создаю полезное';
-                    avatarDisplay.textContent = avatarEmoji;
-                    renderLinks();
-                    saveState();
-                }
-            }
-
-            // --- изменить аватар (эмодзи) ---
-            function changeAvatar() {
-                if (!isOwner) {
-                    alert('Только владелец может изменить аватар.');
-                    return;
-                }
-                const newEmoji = prompt('Введите новый эмодзи для аватара (один символ или смайлик):', avatarEmoji);
-                if (newEmoji !== null && newEmoji.trim().length > 0) {
-                    avatarEmoji = newEmoji.trim().slice(0, 4);
-                    avatarDisplay.textContent = avatarEmoji;
-                    saveState();
-                }
-            }
-
-            // --- переключение режима владелец/просмотр (с паролем) ---
-            function toggleMode() {
-                if (isOwner) {
-                    // выходим из режима владельца
-                    isOwner = false;
-                    updateModeUI();
-                    saveState();
-                    return;
-                } else {
-                    // вход в режим владельца — запрашиваем пароль
-                    const pwd = prompt('Введите пароль владельца:', '');
-                    if (pwd === '1234') {  // простой пароль для демонстрации
-                        isOwner = true;
-                        updateModeUI();
-                        saveState();
-                    } else if (pwd !== null) {
-                        alert('Неверный пароль. Доступ запрещён.');
-                    }
-                }
-            }
-
-            // --- инициализация ---
-            function init() {
-                loadState();
-                avatarDisplay.textContent = avatarEmoji;
-                renderLinks();
-
-                // события
-                addLinkBtn.addEventListener('click', addLink);
-                avatarEditBtn.addEventListener('click', changeAvatar);
-                resetBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    resetToDefault();
-                });
-                saveBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    if (!isOwner) {
-                        alert('Только владелец может сохранять изменения.');
-                        return;
-                    }
-                    saveState();
-                });
-                toggleModeBtn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    toggleMode();
-                });
-
-                // автосохранение при изменении имени/био (только для владельца)
-                nameInput.addEventListener('input', () => {
-                    if (isOwner) saveState();
-                });
-                bioInput.addEventListener('input', () => {
-                    if (isOwner) saveState();
-                });
-
-                // горячие клавиши (добавление по Enter в последнем поле url)
-                document.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' && e.target.classList.contains('link-url-input')) {
-                        if (!isOwner) return;
-                        const inputs = document.querySelectorAll('.link-url-input');
-                        if (inputs.length && e.target === inputs[inputs.length - 1]) {
-                            e.preventDefault();
-                            addLink();
-                        }
-                    }
-                });
-            }
-
-            init();
-        })();
+        // ===== ИНИЦИАЛИЗАЦИЯ =====
+        loadData();
+        renderPublic();
     </script>
 </body>
 </html>
