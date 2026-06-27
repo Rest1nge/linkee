@@ -185,6 +185,26 @@
             border-color: var(--accent);
         }
         
+        /* Индикатор публичного режима */
+        .public-badge {
+            display: none;
+            position: fixed;
+            top: 12px;
+            right: 12px;
+            background: var(--accent);
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            z-index: 50;
+            box-shadow: 0 2px 8px rgba(114,137,218,0.3);
+        }
+        
+        .public-badge.show {
+            display: block;
+        }
+        
         /* Модальное окно пароля */
         .modal-overlay {
             display: none;
@@ -427,6 +447,68 @@
             max-height: 120px;
         }
         
+        /* Загрузка аватара */
+        .avatar-upload-area {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .avatar-preview-small {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border);
+            flex-shrink: 0;
+            background: var(--input);
+        }
+        
+        .avatar-upload-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            flex: 1;
+            min-width: 140px;
+        }
+        
+        .btn-upload {
+            padding: 10px 16px;
+            background: var(--btn);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 13px;
+            text-align: center;
+            transition: all 0.2s;
+            font-family: inherit;
+            min-height: 40px;
+        }
+        
+        .btn-upload:active {
+            background: var(--btn-hover);
+            border-color: var(--accent);
+        }
+        
+        .btn-remove-avatar {
+            padding: 6px 12px;
+            background: transparent;
+            color: var(--danger);
+            border: 1px solid transparent;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 11px;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        
+        .btn-remove-avatar:active {
+            border-color: var(--danger);
+            background: var(--danger-bg);
+        }
+        
         .link-row,
         .social-row {
             display: flex;
@@ -591,6 +673,50 @@
             opacity: 0.6;
         }
         
+        /* Инфо-блок с share-ссылкой */
+        .share-info {
+            background: var(--input);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--sub);
+            text-align: center;
+        }
+        
+        .share-info .share-url {
+            display: block;
+            color: var(--accent);
+            word-break: break-all;
+            margin: 6px 0;
+            font-size: 11px;
+            background: var(--bg);
+            padding: 8px;
+            border-radius: 4px;
+            user-select: all;
+            -webkit-user-select: all;
+        }
+        
+        .btn-copy {
+            padding: 6px 14px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            font-family: inherit;
+            transition: all 0.2s;
+            min-height: 36px;
+        }
+        
+        .btn-copy:active {
+            background: var(--accent-hover);
+            transform: scale(0.95);
+        }
+        
         /* Toast */
         .toast {
             position: fixed;
@@ -640,10 +766,14 @@
             .link-btn { padding: 13px 16px; font-size: 14px; }
             .admin-panel { padding: 16px 14px; }
             .social-row select { width: 75px; font-size: 11px; }
+            .avatar-upload-area { flex-direction: column; align-items: flex-start; }
         }
     </style>
 </head>
 <body>
+
+    <!-- Индикатор публичного режима -->
+    <div class="public-badge" id="publicBadge">🌐 Публичная версия</div>
 
     <!-- Публичный вид -->
     <div class="container" id="publicView">
@@ -654,7 +784,7 @@
         <div class="bio" id="pubBio"></div>
         <div class="links" id="pubLinks"></div>
         <div class="social-icons" id="pubSocials"></div>
-        <button class="admin-entry" onclick="openPasswordModal()" title="Вход для администратора">
+        <button class="admin-entry" id="adminEntryBtn" onclick="openPasswordModal()" title="Вход для администратора">
             🔑 Админ
         </button>
     </div>
@@ -667,10 +797,25 @@
             <button class="logout-btn" onclick="logout()" title="Выйти">Выйти</button>
         </div>
 
+        <!-- Загрузка аватара -->
         <div class="form-group">
-            <label>📷 Ссылка на аватар</label>
-            <input type="url" id="editAvatar" placeholder="https://example.com/photo.jpg" inputmode="url">
+            <label>📷 Аватар</label>
+            <div class="avatar-upload-area">
+                <img class="avatar-preview-small" id="avatarPreviewSmall" src="" alt="Preview">
+                <div class="avatar-upload-buttons">
+                    <button class="btn-upload" onclick="document.getElementById('avatarFileInput').click()">
+                        📁 Загрузить фото
+                    </button>
+                    <button class="btn-remove-avatar" onclick="removeAvatar()">
+                        ✕ Удалить аватар
+                    </button>
+                </div>
+                <input type="file" id="avatarFileInput" accept="image/*" style="display:none" onchange="handleAvatarUpload(event)">
+            </div>
+            <input type="url" id="editAvatar" placeholder="Или вставьте ссылку на фото..." inputmode="url" style="margin-top:8px;">
+            <small style="color:var(--sub);font-size:10px;display:block;margin-top:4px;">Поддерживаются оба способа: загрузка файла или ссылка</small>
         </div>
+
         <div class="form-group">
             <label>👤 Имя</label>
             <input type="text" id="editName" placeholder="Твоё имя" maxlength="60">
@@ -691,6 +836,18 @@
         <button class="btn-small" onclick="addSocial()">+ Добавить соцсеть</button>
 
         <button class="btn btn-primary" style="margin-top:20px;" onclick="saveAll()">💾 Сохранить изменения</button>
+
+        <!-- Публикация -->
+        <hr class="divider">
+        <span class="section-label">🌍 Поделиться с другими</span>
+        <div class="share-info">
+            <p>Опубликуй эту страницу, чтобы другие видели твои ссылки:</p>
+            <button class="btn-copy" onclick="publishAndShare()" style="margin-top:8px;">🚀 Опубликовать и скопировать ссылку</button>
+            <p style="font-size:10px;margin-top:6px;color:var(--sub);">
+                Данные будут закодированы в ссылку. Кто откроет её — увидит актуальную версию.
+            </p>
+        </div>
+
         <button class="btn btn-outline" onclick="exportJSON()">📤 Скачать бэкап (JSON)</button>
         <button class="btn btn-outline" onclick="importJSON()">📥 Загрузить бэкап</button>
         <button class="btn btn-outline danger" onclick="resetAll()">🗑 Сбросить всё</button>
@@ -721,12 +878,13 @@
         // ===== КОНФИГУРАЦИЯ =====
         const ADMIN_PASSWORD = 'David';
         let isAdmin = false;
+        let isPublicMode = false; // true если страница открыта по share-ссылке
 
         // ===== ДАННЫЕ ПО УМОЛЧАНИЮ =====
         const defaultData = {
             avatar: '',
             name: 'Твоё Имя',
-            bio: 'Здесь может быть твоё описание.\nРасскажи о себе в паре строк.',
+            bio: 'Здесь может быть твоё описание.\nРасскажи о себе в пару строк.',
             links: [
                 { title: 'Мой Telegram', url: 'https://t.me/username' },
                 { title: 'YouTube канал', url: 'https://youtube.com/@username' },
@@ -758,8 +916,33 @@
 
         let data = { ...defaultData };
 
-        // ===== РАБОТА С ДАННЫМИ =====
+        // ===== ЗАГРУЗКА ДАННЫХ =====
         function loadData() {
+            // 1. Пробуем загрузить из URL (share-ссылка)
+            const urlParams = new URLSearchParams(window.location.search);
+            const encodedData = urlParams.get('d');
+            
+            if (encodedData) {
+                try {
+                    const jsonStr = decompressData(encodedData);
+                    const parsed = JSON.parse(jsonStr);
+                    data = { ...defaultData, ...parsed };
+                    if (!Array.isArray(data.links)) data.links = [...defaultData.links];
+                    if (!Array.isArray(data.socials)) data.socials = [...defaultData.socials];
+                    isPublicMode = true;
+                    
+                    // Показываем индикатор
+                    document.getElementById('publicBadge').classList.add('show');
+                    // Скрываем кнопку админа
+                    document.getElementById('adminEntryBtn').style.display = 'none';
+                    
+                    return; // Данные из URL приоритетнее
+                } catch (e) {
+                    console.log('Не удалось распарсить данные из URL, пробуем localStorage');
+                }
+            }
+
+            // 2. Загружаем из localStorage
             const saved = localStorage.getItem('mylinktree_data');
             if (saved) {
                 try {
@@ -771,27 +954,53 @@
                     data = { ...defaultData };
                 }
             }
+            
+            isPublicMode = false;
+            document.getElementById('publicBadge').classList.remove('show');
+            document.getElementById('adminEntryBtn').style.display = '';
         }
 
         function saveData() {
             localStorage.setItem('mylinktree_data', JSON.stringify(data));
         }
 
+        // ===== СЖАТИЕ ДАННЫХ ДЛЯ URL =====
+        function compressData(jsonStr) {
+            // Используем btoa + encodeURIComponent для безопасной передачи в URL
+            try {
+                return btoa(encodeURIComponent(jsonStr).replace(/%([0-9A-F]{2})/g, (match, p1) => {
+                    return String.fromCharCode('0x' + p1);
+                }));
+            } catch (e) {
+                // Fallback: просто btoa
+                return btoa(jsonStr);
+            }
+        }
+
+        function decompressData(encoded) {
+            try {
+                return decodeURIComponent(atob(encoded).split('').map(c => {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+            } catch (e) {
+                // Fallback: просто atob
+                return atob(encoded);
+            }
+        }
+
         // ===== ПУБЛИЧНЫЙ ВИД =====
         function renderPublic() {
             // Аватар
             const avatarEl = document.getElementById('pubAvatar');
-            if (data.avatar) {
-                avatarEl.src = data.avatar;
+            const avatarSrc = data.avatar || '';
+            
+            if (avatarSrc) {
+                avatarEl.src = avatarSrc;
                 avatarEl.onerror = () => {
-                    avatarEl.src = 'data:image/svg+xml,' + encodeURIComponent(
-                        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23333" width="100" height="100"/><text x="50" y="58" text-anchor="middle" fill="%23777" font-size="40" font-family="sans-serif">?</text></svg>'
-                    );
+                    avatarEl.src = generatePlaceholderAvatar();
                 };
             } else {
-                avatarEl.src = 'data:image/svg+xml,' + encodeURIComponent(
-                    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23333" width="100" height="100"/><text x="50" y="58" text-anchor="middle" fill="%23777" font-size="40" font-family="sans-serif">?</text></svg>'
-                );
+                avatarEl.src = generatePlaceholderAvatar();
             }
 
             document.getElementById('pubName').textContent = data.name || 'Имя';
@@ -832,11 +1041,23 @@
                     }
                 });
             }
+            
+            // Обновляем превью в админке если открыта
+            if (document.getElementById('adminPanel').classList.contains('active')) {
+                updateAvatarPreview();
+            }
+        }
+
+        function generatePlaceholderAvatar() {
+            return 'data:image/svg+xml,' + encodeURIComponent(
+                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23333" width="100" height="100"/><text x="50" y="58" text-anchor="middle" fill="%23777" font-size="40" font-family="sans-serif">?</text></svg>'
+            );
         }
 
         // ===== АДМИН-ПАНЕЛЬ =====
         function renderAdmin() {
             document.getElementById('editAvatar').value = data.avatar || '';
+            updateAvatarPreview();
             document.getElementById('editName').value = data.name || '';
             document.getElementById('editBio').value = data.bio || '';
 
@@ -878,8 +1099,18 @@
                 el.addEventListener('input', autoSaveField);
             });
             ['editAvatar', 'editName', 'editBio'].forEach(id => {
-                document.getElementById(id).addEventListener('input', autoSaveField);
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('input', autoSaveField);
             });
+        }
+
+        function updateAvatarPreview() {
+            const preview = document.getElementById('avatarPreviewSmall');
+            if (data.avatar) {
+                preview.src = data.avatar;
+            } else {
+                preview.src = generatePlaceholderAvatar();
+            }
         }
 
         function escapeAttr(str) {
@@ -907,13 +1138,86 @@
             renderPublic();
         }
 
+        // ===== ЗАГРУЗКА АВАТАРА С УСТРОЙСТВА =====
+        function handleAvatarUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            // Проверка размера (макс 2MB)
+            if (file.size > 2 * 1024 * 1024) {
+                showToast('❌ Файл слишком большой (макс 2MB)', true);
+                event.target.value = '';
+                return;
+            }
+
+            // Проверка типа
+            if (!file.type.startsWith('image/')) {
+                showToast('❌ Выберите изображение', true);
+                event.target.value = '';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const base64 = e.target.result;
+                
+                // Сжимаем если нужно
+                const img = new Image();
+                img.onload = () => {
+                    let canvas = document.createElement('canvas');
+                    let ctx = canvas.getContext('2d');
+                    
+                    // Максимальный размер 400x400
+                    let width = img.width;
+                    let height = img.height;
+                    const maxSize = 400;
+                    
+                    if (width > maxSize || height > maxSize) {
+                        if (width > height) {
+                            height = (height / width) * maxSize;
+                            width = maxSize;
+                        } else {
+                            width = (width / height) * maxSize;
+                            height = maxSize;
+                        }
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    // Сжатие JPEG quality 0.8
+                    data.avatar = canvas.toDataURL('image/jpeg', 0.8);
+                    document.getElementById('editAvatar').value = '[загружено с устройства]';
+                    updateAvatarPreview();
+                    saveData();
+                    renderPublic();
+                    showToast('📷 Фото загружено!');
+                };
+                img.src = base64;
+            };
+            reader.readAsDataURL(file);
+            
+            // Сброс input для повторной загрузки того же файла
+            event.target.value = '';
+        }
+
+        function removeAvatar() {
+            data.avatar = '';
+            document.getElementById('editAvatar').value = '';
+            updateAvatarPreview();
+            saveData();
+            renderPublic();
+            showToast('🗑 Аватар удалён');
+        }
+
+        // ===== РАБОТА С ССЫЛКАМИ И СОЦСЕТЯМИ =====
         function addLink() {
             if (!data.links) data.links = [];
             data.links.push({ title: '', url: '' });
             saveData();
             renderPublic();
             renderAdmin();
-            // Скролл к новой ссылке
             setTimeout(() => {
                 const lastRow = document.querySelector('#editLinks .link-row:last-child');
                 if (lastRow) lastRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -951,9 +1255,15 @@
         }
 
         function saveAll() {
-            data.avatar = document.getElementById('editAvatar').value;
             data.name = document.getElementById('editName').value;
             data.bio = document.getElementById('editBio').value;
+            
+            // Аватар из URL если вставлен
+            const avatarUrl = document.getElementById('editAvatar').value;
+            if (avatarUrl && avatarUrl !== '[загружено с устройства]' && avatarUrl.startsWith('http')) {
+                data.avatar = avatarUrl;
+            }
+            // Иначе оставляем то что уже в data.avatar (мог быть загружен файл)
 
             const linkRows = document.querySelectorAll('#editLinks .link-row');
             data.links = [];
@@ -973,6 +1283,80 @@
             saveData();
             renderPublic();
             showToast('✅ Сохранено!');
+        }
+
+        // ===== ПУБЛИКАЦИЯ =====
+        function publishAndShare() {
+            // Сначала сохраняем
+            saveAll();
+            
+            // Создаём чистый объект данных без base64 если он огромный
+            const cleanData = JSON.parse(JSON.stringify(data));
+            
+            // Если аватар это base64 и он больше 50KB, сжимаем
+            if (cleanData.avatar && cleanData.avatar.startsWith('data:image')) {
+                if (cleanData.avatar.length > 50000) {
+                    // Создаём маленькую версию
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        canvas.width = 150;
+                        canvas.height = 150;
+                        ctx.drawImage(img, 0, 0, 150, 150);
+                        cleanData.avatar = canvas.toDataURL('image/jpeg', 0.5);
+                        generateShareUrl(cleanData);
+                    };
+                    img.src = cleanData.avatar;
+                    return;
+                }
+            }
+            
+            generateShareUrl(cleanData);
+        }
+
+        function generateShareUrl(cleanData) {
+            try {
+                const jsonStr = JSON.stringify(cleanData);
+                const encoded = compressData(jsonStr);
+                
+                // Формируем URL
+                const baseUrl = window.location.origin + window.location.pathname;
+                const shareUrl = `${baseUrl}?d=${encodeURIComponent(encoded)}`;
+                
+                // Копируем
+                copyToClipboard(shareUrl);
+                showToast('🔗 Ссылка скопирована! Отправь её друзьям');
+            } catch (e) {
+                showToast('❌ Ошибка: данные слишком большие. Попробуйте уменьшить фото.', true);
+            }
+        }
+
+        function copyToClipboard(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).catch(() => {
+                    fallbackCopy(text);
+                });
+            } else {
+                fallbackCopy(text);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-9999px';
+            textArea.style.top = '-9999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            try {
+                document.execCommand('copy');
+            } catch (err) {
+                showToast('❌ Не удалось скопировать', true);
+            }
+            document.body.removeChild(textArea);
         }
 
         // ===== УПРАВЛЕНИЕ АДМИНКОЙ =====
@@ -1003,27 +1387,16 @@
                 errorEl.classList.add('show');
                 document.getElementById('passwordInput').value = '';
                 document.getElementById('passwordInput').focus();
-                // Тряска
                 errorEl.style.animation = 'none';
                 errorEl.offsetHeight;
                 errorEl.style.animation = 'shake 0.3s ease';
             }
         }
 
-        // Enter в поле пароля
-        document.addEventListener('DOMContentLoaded', () => {
-            document.getElementById('passwordInput').addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') checkPassword();
-            });
-            // Клик вне модалки
-            document.getElementById('passwordModal').addEventListener('click', (e) => {
-                if (e.target === document.getElementById('passwordModal')) closePasswordModal();
-            });
-        });
-
         function openAdmin() {
             document.getElementById('adminPanel').classList.add('active');
             document.getElementById('publicView').style.display = 'none';
+            document.getElementById('publicBadge').classList.remove('show');
             renderAdmin();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -1031,6 +1404,9 @@
         function closeAdmin() {
             document.getElementById('adminPanel').classList.remove('active');
             document.getElementById('publicView').style.display = '';
+            if (isPublicMode) {
+                document.getElementById('publicBadge').classList.add('show');
+            }
             renderPublic();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -1103,8 +1479,27 @@
         }
 
         // ===== ИНИЦИАЛИЗАЦИЯ =====
-        loadData();
-        renderPublic();
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('passwordInput').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') checkPassword();
+            });
+            document.getElementById('passwordModal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('passwordModal')) closePasswordModal();
+            });
+            
+            loadData();
+            renderPublic();
+            
+            // Если это share-ссылка и нет данных в URL, скрываем админ-кнопку
+            if (!isPublicMode) {
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('d')) {
+                    isPublicMode = true;
+                    document.getElementById('publicBadge').classList.add('show');
+                    document.getElementById('adminEntryBtn').style.display = 'none';
+                }
+            }
+        });
     </script>
 </body>
-</html>
+                    </html>
