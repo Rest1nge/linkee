@@ -1,10 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes" />
     <title>Мои ссылки · LinkTree</title>
-    <!-- Шрифт и базовый сброс -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600&display=swap" rel="stylesheet" />
@@ -24,17 +24,17 @@
             justify-content: center;
             padding: 20px;
             background-image: radial-gradient(circle at 10% 20%, rgba(0, 150, 255, 0.03) 0%, transparent 50%);
+            transition: background 0.2s;
         }
 
         .card {
-            max-width: 460px;
+            max-width: 500px;
             width: 100%;
             background: #ffffff;
             border-radius: 36px;
-            padding: 40px 28px 32px;
+            padding: 32px 24px 28px;
             box-shadow: 0 20px 60px rgba(0, 20, 40, 0.08), 0 8px 20px rgba(0, 0, 0, 0.02);
-            transition: box-shadow 0.25s ease;
-            backdrop-filter: blur(2px);
+            transition: box-shadow 0.25s ease, background 0.2s;
             border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
@@ -42,12 +42,18 @@
             box-shadow: 0 30px 70px rgba(0, 20, 40, 0.10);
         }
 
-        /* ——— Аватар + имя ——— */
+        /* ——— Профиль (редактируемый) ——— */
         .profile {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 32px;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .avatar-wrapper {
+            position: relative;
+            margin-bottom: 12px;
         }
 
         .avatar {
@@ -61,109 +67,220 @@
             font-size: 44px;
             font-weight: 500;
             color: #1e2b3c;
-            margin-bottom: 16px;
             box-shadow: 0 6px 14px rgba(0, 0, 0, 0.02);
             border: 3px solid white;
             transition: transform 0.2s ease;
             user-select: none;
+            cursor: default;
         }
 
-        .avatar span {
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.02));
+        .avatar-edit-btn {
+            position: absolute;
+            bottom: -4px;
+            right: -4px;
+            background: #eef3fa;
+            border: 2px solid white;
+            border-radius: 30px;
+            width: 34px;
+            height: 34px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.15s;
+            color: #1f3349;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .avatar-edit-btn:hover {
+            background: #dce6f2;
+            transform: scale(1.05);
         }
 
-        .name {
+        .name-input,
+        .bio-input {
+            border: none;
+            background: transparent;
+            text-align: center;
+            font-family: inherit;
+            color: #0b1a2b;
+            transition: border 0.2s, background 0.2s;
+            border-radius: 12px;
+            padding: 4px 12px;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .name-input {
             font-size: 24px;
             font-weight: 600;
             letter-spacing: -0.3px;
-            color: #0b1a2b;
-            margin-bottom: 4px;
+            margin-bottom: 2px;
         }
 
-        .bio {
+        .bio-input {
             font-size: 15px;
             font-weight: 400;
             color: #5d6f83;
-            text-align: center;
-            max-width: 260px;
+            max-width: 300px;
             line-height: 1.4;
         }
 
-        /* ——— Ссылки (кнопки) ——— */
+        .name-input:focus,
+        .bio-input:focus {
+            outline: 2px solid #c0d0e5;
+            outline-offset: 2px;
+            background: #f5f9ff;
+        }
+
+        .name-input::placeholder,
+        .bio-input::placeholder {
+            color: #a0b4ca;
+            font-weight: 400;
+        }
+
+        /* ——— Ссылки (редактируемые) ——— */
         .links {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-            margin: 28px 0 32px;
+            gap: 10px;
+            margin: 20px 0 24px;
         }
 
         .link-item {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 10px;
             background: #f8faff;
-            padding: 16px 20px;
+            padding: 10px 16px 10px 18px;
             border-radius: 60px;
-            text-decoration: none;
-            color: #0b1a2b;
-            font-weight: 500;
-            font-size: 16px;
-            transition: all 0.18s ease;
             border: 1px solid #eef3fa;
+            transition: all 0.18s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.01);
-            cursor: pointer;
         }
 
         .link-item:hover {
             background: #ffffff;
             border-color: #cbd8e8;
             box-shadow: 0 6px 16px rgba(0, 40, 80, 0.06);
-            transform: scale(1.01) translateY(-1px);
         }
 
-        .link-item:active {
-            transform: scale(0.97);
-        }
-
-        .link-left {
+        .link-fields {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 10px;
+            flex: 1;
+            min-width: 0;
         }
 
-        .link-icon {
+        .link-icon-input {
             font-size: 20px;
-            line-height: 1;
-            width: 28px;
+            width: 34px;
             text-align: center;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            padding: 4px 0;
+            border-radius: 30px;
+            transition: 0.15s;
+        }
+        .link-icon-input:focus {
+            outline: 2px solid #c0d0e5;
+            background: #f5f9ff;
+        }
+
+        .link-label-input {
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            font-weight: 500;
+            font-size: 15px;
+            color: #0b1a2b;
+            padding: 6px 8px;
+            border-radius: 30px;
+            flex: 1;
+            min-width: 60px;
+        }
+        .link-label-input:focus {
+            outline: 2px solid #c0d0e5;
+            background: #f5f9ff;
+        }
+
+        .link-url-input {
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            font-size: 13px;
+            color: #3f5a77;
+            padding: 6px 8px;
+            border-radius: 30px;
+            flex: 1.2;
+            min-width: 80px;
+            font-weight: 400;
+        }
+        .link-url-input:focus {
+            outline: 2px solid #c0d0e5;
+            background: #f5f9ff;
+        }
+
+        .link-actions {
+            display: flex;
+            gap: 4px;
             flex-shrink: 0;
         }
 
-        .link-label {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .link-arrow {
-            color: #8a9bb0;
+        .link-btn {
+            background: transparent;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 30px;
             font-size: 18px;
-            transition: transform 0.2s ease;
-            margin-left: 6px;
+            cursor: pointer;
+            transition: 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #5d6f83;
+        }
+        .link-btn:hover {
+            background: #e6edf8;
+            color: #0b1a2b;
+        }
+        .link-btn.danger:hover {
+            background: #ffe6e6;
+            color: #b33;
         }
 
-        .link-item:hover .link-arrow {
-            transform: translateX(4px);
-            color: #2b4a6a;
+        .add-link-btn {
+            background: #eef3fa;
+            border: 1px dashed #bcccdb;
+            border-radius: 60px;
+            padding: 12px 20px;
+            font-family: inherit;
+            font-weight: 500;
+            font-size: 15px;
+            color: #1f3349;
+            cursor: pointer;
+            transition: 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+        .add-link-btn:hover {
+            background: #e2eaf5;
+            border-color: #8aa3c0;
         }
 
-        /* ——— Нижний блок (соц. кнопки + подпись) ——— */
+        /* ——— Нижний блок ——— */
         .footer {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 18px;
-            margin-top: 4px;
+            gap: 16px;
+            margin-top: 6px;
         }
 
         .social-row {
@@ -187,7 +304,6 @@
             transition: all 0.2s ease;
             border: 1px solid transparent;
         }
-
         .social-link:hover {
             background: #e6edf8;
             border-color: #cbd8e8;
@@ -195,59 +311,27 @@
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.02);
         }
 
-        .social-link:active {
-            transform: scale(0.92);
-        }
-
         .credit {
             font-size: 13px;
             font-weight: 400;
             color: #8b9bb0;
-            letter-spacing: 0.2px;
             border-top: 1px solid #edf2f9;
-            padding-top: 20px;
+            padding-top: 16px;
             width: 100%;
             text-align: center;
         }
-
         .credit a {
             color: #3f5a77;
             text-decoration: none;
             font-weight: 500;
-            transition: color 0.15s;
+            cursor: pointer;
         }
-
         .credit a:hover {
             color: #0b1a2b;
             text-decoration: underline;
         }
 
-        /* ——— Адаптив ——— */
-        @media (max-width: 480px) {
-            .card {
-                padding: 28px 18px 24px;
-                border-radius: 28px;
-            }
-            .avatar {
-                width: 80px;
-                height: 80px;
-                font-size: 38px;
-            }
-            .name {
-                font-size: 22px;
-            }
-            .link-item {
-                padding: 14px 16px;
-                font-size: 15px;
-            }
-            .social-link {
-                width: 44px;
-                height: 44px;
-                font-size: 20px;
-            }
-        }
-
-        /* тёмная тема (опционально, для тех, кто предпочитает) */
+        /* ——— тёмная тема ——— */
         @media (prefers-color-scheme: dark) {
             body {
                 background: #111820;
@@ -266,29 +350,58 @@
                 color: #eef4fc;
                 border-color: #2f3f55;
             }
-            .name {
+            .name-input {
                 color: #edf4fc;
             }
-            .bio {
+            .bio-input {
                 color: #a5b9d0;
+            }
+            .name-input:focus,
+            .bio-input:focus,
+            .link-icon-input:focus,
+            .link-label-input:focus,
+            .link-url-input:focus {
+                background: #253544;
+                outline-color: #4a6180;
             }
             .link-item {
                 background: #22303f;
                 border-color: #32445a;
-                color: #e9f0f8;
             }
             .link-item:hover {
                 background: #2b3d53;
                 border-color: #4a6180;
                 box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
             }
-            .link-arrow {
-                color: #7b93af;
+            .link-label-input {
+                color: #e9f0f8;
+            }
+            .link-url-input {
+                color: #b0c8e5;
+            }
+            .link-btn {
+                color: #9ab0cc;
+            }
+            .link-btn:hover {
+                background: #314b63;
+                color: #eef4fc;
+            }
+            .link-btn.danger:hover {
+                background: #4a2a2a;
+                color: #f88;
+            }
+            .add-link-btn {
+                background: #263649;
+                border-color: #40566e;
+                color: #d0def0;
+            }
+            .add-link-btn:hover {
+                background: #314b63;
+                border-color: #5a7a9a;
             }
             .social-link {
                 background: #263649;
                 color: #cfdef5;
-                border-color: transparent;
             }
             .social-link:hover {
                 background: #31495f;
@@ -304,97 +417,487 @@
             .credit a:hover {
                 color: #ffffff;
             }
+            .avatar-edit-btn {
+                background: #2f3f55;
+                border-color: #1a2533;
+                color: #d0def0;
+            }
+            .avatar-edit-btn:hover {
+                background: #405a78;
+            }
+        }
+
+        /* адаптив */
+        @media (max-width: 480px) {
+            .card {
+                padding: 24px 14px 20px;
+                border-radius: 28px;
+            }
+            .avatar {
+                width: 80px;
+                height: 80px;
+                font-size: 38px;
+            }
+            .name-input {
+                font-size: 22px;
+            }
+            .link-item {
+                padding: 8px 12px 8px 14px;
+                flex-wrap: wrap;
+            }
+            .link-fields {
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+            .link-label-input {
+                min-width: 80px;
+                font-size: 14px;
+            }
+            .link-url-input {
+                min-width: 100px;
+                font-size: 12px;
+                flex: 1 1 100%;
+            }
+            .link-icon-input {
+                width: 28px;
+                font-size: 18px;
+            }
+        }
+
+        /* --- индикатор режима просмотра --- */
+        .view-mode-badge {
+            font-size: 12px;
+            background: #eef3fa;
+            padding: 4px 14px;
+            border-radius: 30px;
+            color: #3f5a77;
+            margin-bottom: 12px;
+            display: inline-block;
+            border: 1px solid #dce4ed;
+            font-weight: 500;
+        }
+        @media (prefers-color-scheme: dark) {
+            .view-mode-badge {
+                background: #263649;
+                border-color: #40566e;
+                color: #b0c8e5;
+            }
         }
     </style>
 </head>
 <body>
     <div class="card" role="main">
 
-        <!-- Профиль -->
+        <!-- ===== ПРОФИЛЬ (редактируемый) ===== -->
         <div class="profile">
-            <div class="avatar" aria-label="Аватар">
-                <span>🌟</span>
+            <div class="avatar-wrapper">
+                <div class="avatar" id="avatarDisplay">🌟</div>
+                <button class="avatar-edit-btn" id="avatarEditBtn" title="Изменить эмодзи">✎</button>
             </div>
-            <div class="name">Алексей Иванов</div>
-            <div class="bio">дизайнер · создаю полезное</div>
+            <input class="name-input" id="nameInput" type="text" value="Алексей Иванов" placeholder="Ваше имя" />
+            <input class="bio-input" id="bioInput" type="text" value="дизайнер · создаю полезное" placeholder="Краткая биография" />
         </div>
 
-        <!-- Ссылки (основные) -->
-        <div class="links">
-            <a href="#" class="link-item" target="_blank" rel="noopener noreferrer">
-                <span class="link-left">
-                    <span class="link-icon">🌐</span>
-                    <span class="link-label">Мой сайт</span>
-                </span>
-                <span class="link-arrow">→</span>
-            </a>
-
-            <a href="#" class="link-item" target="_blank" rel="noopener noreferrer">
-                <span class="link-left">
-                    <span class="link-icon">📸</span>
-                    <span class="link-label">Instagram</span>
-                </span>
-                <span class="link-arrow">→</span>
-            </a>
-
-            <a href="#" class="link-item" target="_blank" rel="noopener noreferrer">
-                <span class="link-left">
-                    <span class="link-icon">🐦</span>
-                    <span class="link-label">Twitter / X</span>
-                </span>
-                <span class="link-arrow">→</span>
-            </a>
-
-            <a href="#" class="link-item" target="_blank" rel="noopener noreferrer">
-                <span class="link-left">
-                    <span class="link-icon">💼</span>
-                    <span class="link-label">LinkedIn</span>
-                </span>
-                <span class="link-arrow">→</span>
-            </a>
-
-            <a href="#" class="link-item" target="_blank" rel="noopener noreferrer">
-                <span class="link-left">
-                    <span class="link-icon">🎬</span>
-                    <span class="link-label">YouTube</span>
-                </span>
-                <span class="link-arrow">→</span>
-            </a>
-
-            <!-- дополнительная ссылка (можно убрать) -->
-            <a href="#" class="link-item" target="_blank" rel="noopener noreferrer">
-                <span class="link-left">
-                    <span class="link-icon">📧</span>
-                    <span class="link-label">Написать письмо</span>
-                </span>
-                <span class="link-arrow">→</span>
-            </a>
+        <!-- ===== СПИСОК ССЫЛОК (редактируемый) ===== -->
+        <div class="links" id="linksContainer">
+            <!-- ссылки будут добавляться сюда через JS -->
         </div>
 
-        <!-- Нижняя часть: соц. иконки + копирайт -->
+        <button class="add-link-btn" id="addLinkBtn">＋ Добавить ссылку</button>
+
+        <!-- ===== НИЖНИЙ БЛОК ===== -->
         <div class="footer">
             <div class="social-row">
-                <a href="#" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Telegram">
-                    <span>✈️</span>
-                </a>
-                <a href="#" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                    <span>🐙</span>
-                </a>
-                <a href="#" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
-                    <span>🎵</span>
-                </a>
-                <a href="#" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="VK">
-                    <span>📘</span>
-                </a>
+                <a href="#" class="social-link" target="_blank" rel="noopener">✈️</a>
+                <a href="#" class="social-link" target="_blank" rel="noopener">🐙</a>
+                <a href="#" class="social-link" target="_blank" rel="noopener">🎵</a>
+                <a href="#" class="social-link" target="_blank" rel="noopener">📘</a>
             </div>
-
             <div class="credit">
+                <span>🔒 </span>
+                <span id="modeIndicator" class="view-mode-badge">режим просмотра</span>
+                <br style="display: none;" id="modeBr" />
                 <span>✨ </span>
-                <a href="#" target="_blank" rel="noopener noreferrer">редактировать ссылки</a>
-                <span> · сделано за 5 минут</span>
+                <a href="#" id="toggleModeBtn" style="cursor:pointer;">🔑 войти как владелец</a>
+                <span> · </span>
+                <a href="#" id="resetDefaultBtn" style="cursor:pointer;">сбросить</a>
+                <span> · </span>
+                <a href="#" id="saveStateBtn" style="cursor:pointer;">💾 сохранить</a>
             </div>
         </div>
-
     </div>
+
+    <script>
+        (function() {
+            // --- начальные данные (пример) ---
+            const DEFAULT_LINKS = [
+                { icon: '🌐', label: 'Мой сайт', url: 'https://example.com' },
+                { icon: '📸', label: 'Instagram', url: 'https://instagram.com' },
+                { icon: '🐦', label: 'Twitter / X', url: 'https://twitter.com' },
+                { icon: '💼', label: 'LinkedIn', url: 'https://linkedin.com' },
+                { icon: '🎬', label: 'YouTube', url: 'https://youtube.com' },
+                { icon: '📧', label: 'Написать письмо', url: 'mailto:hello@example.com' }
+            ];
+
+            // --- DOM-элементы ---
+            const linksContainer = document.getElementById('linksContainer');
+            const addLinkBtn = document.getElementById('addLinkBtn');
+            const nameInput = document.getElementById('nameInput');
+            const bioInput = document.getElementById('bioInput');
+            const avatarDisplay = document.getElementById('avatarDisplay');
+            const avatarEditBtn = document.getElementById('avatarEditBtn');
+            const resetBtn = document.getElementById('resetDefaultBtn');
+            const saveBtn = document.getElementById('saveStateBtn');
+            const toggleModeBtn = document.getElementById('toggleModeBtn');
+            const modeIndicator = document.getElementById('modeIndicator');
+
+            // --- состояние ---
+            let links = [];
+            let avatarEmoji = '🌟';
+            let isOwner = false;  // по умолчанию — режим просмотра
+
+            // --- загрузка из localStorage ---
+            function loadState() {
+                try {
+                    const saved = localStorage.getItem('linktree_data');
+                    if (saved) {
+                        const data = JSON.parse(saved);
+                        if (data.links && Array.isArray(data.links)) {
+                            links = data.links;
+                        } else {
+                            links = JSON.parse(JSON.stringify(DEFAULT_LINKS));
+                        }
+                        if (data.avatar) avatarEmoji = data.avatar;
+                        if (data.name !== undefined) nameInput.value = data.name;
+                        if (data.bio !== undefined) bioInput.value = data.bio;
+                        // загружаем режим владельца (по умолчанию false)
+                        if (data.isOwner === true) {
+                            isOwner = true;
+                        } else {
+                            isOwner = false;
+                        }
+                        return;
+                    }
+                } catch (_) { /* ignore */ }
+                // если нет сохранения — дефолт
+                links = JSON.parse(JSON.stringify(DEFAULT_LINKS));
+                avatarEmoji = '🌟';
+                nameInput.value = 'Алексей Иванов';
+                bioInput.value = 'дизайнер · создаю полезное';
+                isOwner = false;
+            }
+
+            // --- сохранение в localStorage ---
+            function saveState() {
+                // перед сохранением собираем данные из полей ввода (если они есть)
+                const iconInputs = document.querySelectorAll('.link-icon-input');
+                const labelInputs = document.querySelectorAll('.link-label-input');
+                const urlInputs = document.querySelectorAll('.link-url-input');
+                for (let i = 0; i < links.length; i++) {
+                    if (iconInputs[i]) links[i].icon = iconInputs[i].value;
+                    if (labelInputs[i]) links[i].label = labelInputs[i].value;
+                    if (urlInputs[i]) links[i].url = urlInputs[i].value;
+                }
+                const data = {
+                    links: links,
+                    avatar: avatarEmoji,
+                    name: nameInput.value,
+                    bio: bioInput.value,
+                    isOwner: isOwner,
+                };
+                localStorage.setItem('linktree_data', JSON.stringify(data));
+                // визуальный фидбек
+                saveBtn.style.transition = 'color 0.1s';
+                saveBtn.style.color = '#2b7a4b';
+                setTimeout(() => { saveBtn.style.color = ''; }, 400);
+            }
+
+            // --- обновление интерфейса в зависимости от режима (владелец / просмотр) ---
+            function updateModeUI() {
+                const editableFields = [
+                    ...document.querySelectorAll('.link-icon-input'),
+                    ...document.querySelectorAll('.link-label-input'),
+                    ...document.querySelectorAll('.link-url-input'),
+                    nameInput, bioInput, avatarEditBtn, addLinkBtn,
+                ];
+                // кнопки действий (↑ ↓ ✕) тоже блокируем
+                const actionBtns = document.querySelectorAll('.link-btn');
+
+                if (isOwner) {
+                    // Включаем редактирование
+                    editableFields.forEach(el => {
+                        if (el) el.disabled = false;
+                        if (el && el.tagName === 'INPUT') {
+                            el.style.opacity = '1';
+                            el.style.cursor = 'text';
+                        }
+                    });
+                    actionBtns.forEach(btn => {
+                        btn.style.pointerEvents = 'auto';
+                        btn.style.opacity = '1';
+                    });
+                    addLinkBtn.style.pointerEvents = 'auto';
+                    addLinkBtn.style.opacity = '1';
+                    modeIndicator.textContent = '🔑 режим владельца';
+                    modeIndicator.style.background = '#d4e2f5';
+                    modeIndicator.style.color = '#1f3b5c';
+                    toggleModeBtn.textContent = '👁️ перейти в просмотр';
+                } else {
+                    // Блокируем редактирование
+                    editableFields.forEach(el => {
+                        if (el) el.disabled = true;
+                        if (el && el.tagName === 'INPUT') {
+                            el.style.opacity = '0.7';
+                            el.style.cursor = 'default';
+                        }
+                    });
+                    actionBtns.forEach(btn => {
+                        btn.style.pointerEvents = 'none';
+                        btn.style.opacity = '0.4';
+                    });
+                    addLinkBtn.style.pointerEvents = 'none';
+                    addLinkBtn.style.opacity = '0.5';
+                    modeIndicator.textContent = '👁️ режим просмотра';
+                    modeIndicator.style.background = '#eef3fa';
+                    modeIndicator.style.color = '#3f5a77';
+                    toggleModeBtn.textContent = '🔑 войти как владелец';
+                }
+                // Сохраняем состояние в localStorage при переключении
+                saveState();
+            }
+
+            // --- рендер всех ссылок ---
+            function renderLinks() {
+                linksContainer.innerHTML = '';
+                links.forEach((link, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'link-item';
+
+                    const fields = document.createElement('div');
+                    fields.className = 'link-fields';
+
+                    const iconInput = document.createElement('input');
+                    iconInput.type = 'text';
+                    iconInput.className = 'link-icon-input';
+                    iconInput.value = link.icon || '🔗';
+                    iconInput.maxLength = 4;
+                    iconInput.placeholder = '🔗';
+                    iconInput.dataset.index = index;
+                    iconInput.dataset.field = 'icon';
+
+                    const labelInput = document.createElement('input');
+                    labelInput.type = 'text';
+                    labelInput.className = 'link-label-input';
+                    labelInput.value = link.label || 'Новая ссылка';
+                    labelInput.placeholder = 'Название';
+                    labelInput.dataset.index = index;
+                    labelInput.dataset.field = 'label';
+
+                    const urlInput = document.createElement('input');
+                    urlInput.type = 'text';
+                    urlInput.className = 'link-url-input';
+                    urlInput.value = link.url || 'https://';
+                    urlInput.placeholder = 'https://...';
+                    urlInput.dataset.index = index;
+                    urlInput.dataset.field = 'url';
+
+                    fields.appendChild(iconInput);
+                    fields.appendChild(labelInput);
+                    fields.appendChild(urlInput);
+
+                    const actions = document.createElement('div');
+                    actions.className = 'link-actions';
+
+                    const upBtn = document.createElement('button');
+                    upBtn.className = 'link-btn';
+                    upBtn.innerHTML = '↑';
+                    upBtn.title = 'Переместить вверх';
+                    upBtn.dataset.index = index;
+                    upBtn.dataset.action = 'up';
+
+                    const downBtn = document.createElement('button');
+                    downBtn.className = 'link-btn';
+                    downBtn.innerHTML = '↓';
+                    downBtn.title = 'Переместить вниз';
+                    downBtn.dataset.index = index;
+                    downBtn.dataset.action = 'down';
+
+                    const delBtn = document.createElement('button');
+                    delBtn.className = 'link-btn danger';
+                    delBtn.innerHTML = '✕';
+                    delBtn.title = 'Удалить ссылку';
+                    delBtn.dataset.index = index;
+                    delBtn.dataset.action = 'delete';
+
+                    actions.appendChild(upBtn);
+                    actions.appendChild(downBtn);
+                    actions.appendChild(delBtn);
+
+                    item.appendChild(fields);
+                    item.appendChild(actions);
+                    linksContainer.appendChild(item);
+
+                    // --- обработчики событий на полях ввода (обновление состояния) ---
+                    const updateLinkField = (e) => {
+                        if (!isOwner) return; // только владелец может менять
+                        const idx = parseInt(e.target.dataset.index);
+                        const field = e.target.dataset.field;
+                        if (isNaN(idx) || idx < 0 || idx >= links.length) return;
+                        links[idx][field] = e.target.value;
+                        saveState();
+                    };
+
+                    iconInput.addEventListener('input', updateLinkField);
+                    labelInput.addEventListener('input', updateLinkField);
+                    urlInput.addEventListener('input', updateLinkField);
+
+                    // обработчики кнопок (только для владельца)
+                    const actionHandler = (e) => {
+                        if (!isOwner) return;
+                        const idx = parseInt(e.currentTarget.dataset.index);
+                        const action = e.currentTarget.dataset.action;
+                        if (action === 'up' && idx > 0) {
+                            [links[idx], links[idx-1]] = [links[idx-1], links[idx]];
+                            renderLinks();
+                            saveState();
+                        } else if (action === 'down' && idx < links.length - 1) {
+                            [links[idx], links[idx+1]] = [links[idx+1], links[idx]];
+                            renderLinks();
+                            saveState();
+                        } else if (action === 'delete') {
+                            if (links.length > 1) {
+                                links.splice(idx, 1);
+                                renderLinks();
+                                saveState();
+                            } else {
+                                alert('Должна остаться хотя бы одна ссылка.');
+                            }
+                        }
+                    };
+
+                    upBtn.addEventListener('click', actionHandler);
+                    downBtn.addEventListener('click', actionHandler);
+                    delBtn.addEventListener('click', actionHandler);
+                });
+
+                // после рендера применяем режим UI
+                updateModeUI();
+            }
+
+            // --- добавить новую ссылку ---
+            function addLink() {
+                if (!isOwner) return;
+                links.push({ icon: '🔗', label: 'Новая ссылка', url: 'https://' });
+                renderLinks();
+                saveState();
+                const allLabels = document.querySelectorAll('.link-label-input');
+                if (allLabels.length) {
+                    allLabels[allLabels.length - 1].focus();
+                    allLabels[allLabels.length - 1].select();
+                }
+            }
+
+            // --- сброс к примеру ---
+            function resetToDefault() {
+                if (!isOwner) {
+                    alert('Только владелец может сбросить настройки.');
+                    return;
+                }
+                if (confirm('Сбросить все ссылки и профиль к примеру?')) {
+                    links = JSON.parse(JSON.stringify(DEFAULT_LINKS));
+                    avatarEmoji = '🌟';
+                    nameInput.value = 'Алексей Иванов';
+                    bioInput.value = 'дизайнер · создаю полезное';
+                    avatarDisplay.textContent = avatarEmoji;
+                    renderLinks();
+                    saveState();
+                }
+            }
+
+            // --- изменить аватар (эмодзи) ---
+            function changeAvatar() {
+                if (!isOwner) {
+                    alert('Только владелец может изменить аватар.');
+                    return;
+                }
+                const newEmoji = prompt('Введите новый эмодзи для аватара (один символ или смайлик):', avatarEmoji);
+                if (newEmoji !== null && newEmoji.trim().length > 0) {
+                    avatarEmoji = newEmoji.trim().slice(0, 4);
+                    avatarDisplay.textContent = avatarEmoji;
+                    saveState();
+                }
+            }
+
+            // --- переключение режима владелец/просмотр (с паролем) ---
+            function toggleMode() {
+                if (isOwner) {
+                    // выходим из режима владельца
+                    isOwner = false;
+                    updateModeUI();
+                    saveState();
+                    return;
+                } else {
+                    // вход в режим владельца — запрашиваем пароль
+                    const pwd = prompt('Введите пароль владельца:', '');
+                    if (pwd === '1234') {  // простой пароль для демонстрации
+                        isOwner = true;
+                        updateModeUI();
+                        saveState();
+                    } else if (pwd !== null) {
+                        alert('Неверный пароль. Доступ запрещён.');
+                    }
+                }
+            }
+
+            // --- инициализация ---
+            function init() {
+                loadState();
+                avatarDisplay.textContent = avatarEmoji;
+                renderLinks();
+
+                // события
+                addLinkBtn.addEventListener('click', addLink);
+                avatarEditBtn.addEventListener('click', changeAvatar);
+                resetBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    resetToDefault();
+                });
+                saveBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (!isOwner) {
+                        alert('Только владелец может сохранять изменения.');
+                        return;
+                    }
+                    saveState();
+                });
+                toggleModeBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    toggleMode();
+                });
+
+                // автосохранение при изменении имени/био (только для владельца)
+                nameInput.addEventListener('input', () => {
+                    if (isOwner) saveState();
+                });
+                bioInput.addEventListener('input', () => {
+                    if (isOwner) saveState();
+                });
+
+                // горячие клавиши (добавление по Enter в последнем поле url)
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && e.target.classList.contains('link-url-input')) {
+                        if (!isOwner) return;
+                        const inputs = document.querySelectorAll('.link-url-input');
+                        if (inputs.length && e.target === inputs[inputs.length - 1]) {
+                            e.preventDefault();
+                            addLink();
+                        }
+                    }
+                });
+            }
+
+            init();
+        })();
+    </script>
 </body>
 </html>
