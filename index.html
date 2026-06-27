@@ -53,6 +53,7 @@
             position: relative;
         }
         
+        /* Аватар и имя */
         .avatar-wrapper {
             position: relative;
             display: inline-block;
@@ -86,6 +87,7 @@
             padding: 0 8px;
         }
         
+        /* Ссылки */
         .links {
             display: flex;
             flex-direction: column;
@@ -127,6 +129,7 @@
             }
         }
         
+        /* Соцсети */
         .social-icons {
             display: flex;
             justify-content: center;
@@ -160,6 +163,7 @@
             }
         }
         
+        /* Кнопка входа в админку */
         .admin-entry {
             margin-top: 28px;
             font-size: 13px;
@@ -181,6 +185,7 @@
             border-color: var(--accent);
         }
         
+        /* Индикатор публичного режима */
         .public-badge {
             display: none;
             position: fixed;
@@ -200,6 +205,7 @@
             display: block;
         }
         
+        /* Модальное окно пароля */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -322,6 +328,7 @@
             75% { transform: translateX(6px); }
         }
         
+        /* Админ-панель */
         .admin-panel {
             display: none;
             margin-top: 0;
@@ -338,6 +345,7 @@
             animation: modalIn 0.3s ease;
         }
         
+        /* Шапка админки с кнопкой назад */
         .admin-header {
             display: flex;
             align-items: center;
@@ -439,6 +447,7 @@
             max-height: 120px;
         }
         
+        /* Загрузка аватара */
         .avatar-upload-area {
             display: flex;
             gap: 12px;
@@ -664,6 +673,7 @@
             opacity: 0.6;
         }
         
+        /* Инфо-блок с share-ссылкой */
         .share-info {
             background: var(--input);
             border: 1px solid var(--border);
@@ -675,39 +685,30 @@
             text-align: center;
         }
         
-        .share-url-box {
-            display: flex;
-            gap: 6px;
-            margin-top: 8px;
-            align-items: stretch;
-        }
-        
-        .share-url-input {
-            flex: 1;
-            padding: 8px 10px;
-            background: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 6px;
+        .share-info .share-url {
+            display: block;
             color: var(--accent);
-            font-size: 11px;
-            font-family: monospace;
             word-break: break-all;
+            margin: 6px 0;
+            font-size: 11px;
+            background: var(--bg);
+            padding: 8px;
+            border-radius: 4px;
             user-select: all;
             -webkit-user-select: all;
         }
         
         .btn-copy {
-            padding: 8px 14px;
+            padding: 6px 14px;
             background: var(--accent);
             color: #fff;
             border: none;
-            border-radius: 6px;
+            border-radius: 20px;
             cursor: pointer;
             font-size: 11px;
             font-weight: 600;
             font-family: inherit;
             transition: all 0.2s;
-            white-space: nowrap;
             min-height: 36px;
         }
         
@@ -716,30 +717,7 @@
             transform: scale(0.95);
         }
         
-        .btn-shorten {
-            margin-top: 6px;
-            padding: 6px 12px;
-            background: var(--btn);
-            color: var(--accent);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: 500;
-            font-family: inherit;
-            transition: all 0.2s;
-        }
-        
-        .btn-shorten:active {
-            background: var(--btn-hover);
-            border-color: var(--accent);
-        }
-        
-        .btn-shorten:disabled {
-            opacity: 0.6;
-            pointer-events: none;
-        }
-        
+        /* Toast */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -757,7 +735,6 @@
             transition: opacity 0.3s ease;
             box-shadow: 0 8px 24px rgba(46,213,115,0.3);
             white-space: nowrap;
-            max-width: 90vw;
         }
         
         .toast.show {
@@ -770,38 +747,19 @@
             box-shadow: 0 8px 24px rgba(255,71,87,0.3);
         }
         
-        .upload-progress {
-            display: none;
-            width: 100%;
-            height: 4px;
-            background: var(--border);
-            border-radius: 2px;
-            margin-top: 8px;
-            overflow: hidden;
-        }
-        
-        .upload-progress.active {
-            display: block;
-        }
-        
-        .upload-progress-bar {
-            height: 100%;
-            background: var(--accent);
-            width: 0%;
-            transition: width 0.3s;
-            border-radius: 2px;
-        }
-        
+        /* Плавный скролл */
         html {
             scroll-behavior: smooth;
         }
         
+        /* Отключаем зум на инпутах в iOS */
         @supports (-webkit-touch-callout: none) {
             input, textarea, select {
                 font-size: 16px !important;
             }
         }
         
+        /* Узкие экраны */
         @media (max-width: 380px) {
             body { padding: 12px; }
             .avatar { width: 80px; height: 80px; }
@@ -814,8 +772,10 @@
 </head>
 <body>
 
+    <!-- Индикатор публичного режима -->
     <div class="public-badge" id="publicBadge">🌐 Публичная версия</div>
 
+    <!-- Публичный вид -->
     <div class="container" id="publicView">
         <div class="avatar-wrapper">
             <img class="avatar" id="pubAvatar" src="" alt="Avatar">
@@ -829,6 +789,7 @@
         </button>
     </div>
 
+    <!-- Админ-панель -->
     <div class="admin-panel" id="adminPanel">
         <div class="admin-header">
             <button class="back-btn" onclick="closeAdmin()" title="Назад к ссылкам">←</button>
@@ -836,6 +797,7 @@
             <button class="logout-btn" onclick="logout()" title="Выйти">Выйти</button>
         </div>
 
+        <!-- Загрузка аватара -->
         <div class="form-group">
             <label>📷 Аватар</label>
             <div class="avatar-upload-area">
@@ -850,13 +812,8 @@
                 </div>
                 <input type="file" id="avatarFileInput" accept="image/*" style="display:none" onchange="handleAvatarUpload(event)">
             </div>
-            <div class="upload-progress" id="uploadProgress">
-                <div class="upload-progress-bar" id="uploadProgressBar"></div>
-            </div>
             <input type="url" id="editAvatar" placeholder="Или вставьте ссылку на фото..." inputmode="url" style="margin-top:8px;">
-            <small style="color:var(--sub);font-size:10px;display:block;margin-top:4px;">
-                💡 Для публикации загрузите фото — оно автоматически загрузится на хостинг и будет видно всем
-            </small>
+            <small style="color:var(--sub);font-size:10px;display:block;margin-top:4px;">Поддерживаются оба способа: загрузка файла или ссылка</small>
         </div>
 
         <div class="form-group">
@@ -880,22 +837,14 @@
 
         <button class="btn btn-primary" style="margin-top:20px;" onclick="saveAll()">💾 Сохранить изменения</button>
 
+        <!-- Публикация -->
         <hr class="divider">
         <span class="section-label">🌍 Поделиться с другими</span>
         <div class="share-info">
-            <p style="margin-bottom:8px;">Публичная ссылка (кто откроет — увидит твой профиль):</p>
-            <div class="share-url-box">
-                <input class="share-url-input" id="shareUrlDisplay" readonly value="Нажми «Создать ссылку»" onclick="this.select()">
-                <button class="btn-copy" onclick="copyShareUrl()">📋</button>
-            </div>
-            <button class="btn-shorten" id="btnShorten" onclick="shortenUrl()" style="display:none;">
-                🔗 Сократить ссылку
-            </button>
-            <button class="btn-shorten" id="btnGenerate" onclick="generateShareUrl()">
-                ✨ Создать ссылку
-            </button>
+            <p>Опубликуй эту страницу, чтобы другие видели твои ссылки:</p>
+            <button class="btn-copy" onclick="publishAndShare()" style="margin-top:8px;">🚀 Опубликовать и скопировать ссылку</button>
             <p style="font-size:10px;margin-top:6px;color:var(--sub);">
-                Залей этот HTML на GitHub Pages, чтобы ссылка работала для всех
+                Данные будут закодированы в ссылку. Кто откроет её — увидит актуальную версию.
             </p>
         </div>
 
@@ -905,6 +854,7 @@
         <p class="admin-footer">Данные хранятся локально в браузере</p>
     </div>
 
+    <!-- Модальное окно пароля -->
     <div class="modal-overlay" id="passwordModal">
         <div class="modal">
             <h3>🔐 Вход в админку</h3>
@@ -918,18 +868,19 @@
         </div>
     </div>
 
+    <!-- Toast -->
     <div class="toast" id="toast"></div>
 
+    <!-- Font Awesome для иконок соцсетей -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <script>
+        // ===== КОНФИГУРАЦИЯ =====
         const ADMIN_PASSWORD = 'David';
-        const IMGBB_API_KEY = '3610e2aeadfbd9e7f5c0c70c07b916e4'; // Бесплатный ключ ImgBB
-        
         let isAdmin = false;
-        let isPublicMode = false;
-        let currentShareUrl = '';
+        let isPublicMode = false; // true если страница открыта по share-ссылке
 
+        // ===== ДАННЫЕ ПО УМОЛЧАНИЮ =====
         const defaultData = {
             avatar: '',
             name: 'Твоё Имя',
@@ -946,6 +897,7 @@
             ]
         };
 
+        // Доступные платформы для соцсетей
         const platforms = [
             { value: 'telegram', label: 'Telegram', icon: 'fa-telegram' },
             { value: 'youtube', label: 'YouTube', icon: 'fa-youtube' },
@@ -964,41 +916,33 @@
 
         let data = { ...defaultData };
 
-        // ===== СЖАТИЕ ДЛЯ URL =====
-        function compressLZ(str) {
-            const minified = JSON.stringify(JSON.parse(str));
-            return btoa(minified)
-                .replace(/\+/g, '-')
-                .replace(/\//g, '_')
-                .replace(/=+$/, '');
-        }
-
-        function decompressLZ(encoded) {
-            let padded = encoded.replace(/-/g, '+').replace(/_/g, '/');
-            while (padded.length % 4) padded += '=';
-            return atob(padded);
-        }
-
+        // ===== ЗАГРУЗКА ДАННЫХ =====
         function loadData() {
+            // 1. Пробуем загрузить из URL (share-ссылка)
             const urlParams = new URLSearchParams(window.location.search);
             const encodedData = urlParams.get('d');
             
             if (encodedData) {
                 try {
-                    const jsonStr = decompressLZ(encodedData);
+                    const jsonStr = decompressData(encodedData);
                     const parsed = JSON.parse(jsonStr);
                     data = { ...defaultData, ...parsed };
                     if (!Array.isArray(data.links)) data.links = [...defaultData.links];
                     if (!Array.isArray(data.socials)) data.socials = [...defaultData.socials];
                     isPublicMode = true;
+                    
+                    // Показываем индикатор
                     document.getElementById('publicBadge').classList.add('show');
+                    // Скрываем кнопку админа
                     document.getElementById('adminEntryBtn').style.display = 'none';
-                    return;
+                    
+                    return; // Данные из URL приоритетнее
                 } catch (e) {
-                    console.log('Не удалось загрузить из URL');
+                    console.log('Не удалось распарсить данные из URL, пробуем localStorage');
                 }
             }
 
+            // 2. Загружаем из localStorage
             const saved = localStorage.getItem('mylinktree_data');
             if (saved) {
                 try {
@@ -1020,23 +964,49 @@
             localStorage.setItem('mylinktree_data', JSON.stringify(data));
         }
 
+        // ===== СЖАТИЕ ДАННЫХ ДЛЯ URL =====
+        function compressData(jsonStr) {
+            // Используем btoa + encodeURIComponent для безопасной передачи в URL
+            try {
+                return btoa(encodeURIComponent(jsonStr).replace(/%([0-9A-F]{2})/g, (match, p1) => {
+                    return String.fromCharCode('0x' + p1);
+                }));
+            } catch (e) {
+                // Fallback: просто btoa
+                return btoa(jsonStr);
+            }
+        }
+
+        function decompressData(encoded) {
+            try {
+                return decodeURIComponent(atob(encoded).split('').map(c => {
+                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+                }).join(''));
+            } catch (e) {
+                // Fallback: просто atob
+                return atob(encoded);
+            }
+        }
+
+        // ===== ПУБЛИЧНЫЙ ВИД =====
         function renderPublic() {
+            // Аватар
             const avatarEl = document.getElementById('pubAvatar');
             const avatarSrc = data.avatar || '';
             
-            if (avatarSrc && (avatarSrc.startsWith('data:image') || avatarSrc.startsWith('http'))) {
+            if (avatarSrc) {
                 avatarEl.src = avatarSrc;
+                avatarEl.onerror = () => {
+                    avatarEl.src = generatePlaceholderAvatar();
+                };
             } else {
                 avatarEl.src = generatePlaceholderAvatar();
             }
-            
-            avatarEl.onerror = () => {
-                avatarEl.src = generatePlaceholderAvatar();
-            };
 
             document.getElementById('pubName').textContent = data.name || 'Имя';
             document.getElementById('pubBio').textContent = data.bio || '';
 
+            // Ссылки
             const linksDiv = document.getElementById('pubLinks');
             linksDiv.innerHTML = '';
             if (data.links && data.links.length > 0) {
@@ -1053,6 +1023,7 @@
                 });
             }
 
+            // Соцсети
             const socialsDiv = document.getElementById('pubSocials');
             socialsDiv.innerHTML = '';
             if (data.socials && data.socials.length > 0) {
@@ -1071,6 +1042,7 @@
                 });
             }
             
+            // Обновляем превью в админке если открыта
             if (document.getElementById('adminPanel').classList.contains('active')) {
                 updateAvatarPreview();
             }
@@ -1082,20 +1054,14 @@
             );
         }
 
+        // ===== АДМИН-ПАНЕЛЬ =====
         function renderAdmin() {
-            const avatarInput = document.getElementById('editAvatar');
-            if (data.avatar && data.avatar.startsWith('http') && !data.avatar.startsWith('data:image')) {
-                avatarInput.value = data.avatar;
-            } else if (data.avatar && data.avatar.startsWith('data:image')) {
-                avatarInput.value = '[загружено с устройства]';
-            } else {
-                avatarInput.value = '';
-            }
-            
+            document.getElementById('editAvatar').value = data.avatar || '';
             updateAvatarPreview();
             document.getElementById('editName').value = data.name || '';
             document.getElementById('editBio').value = data.bio || '';
 
+            // Ссылки
             const editLinksDiv = document.getElementById('editLinks');
             editLinksDiv.innerHTML = '';
             if (!data.links) data.links = [];
@@ -1110,6 +1076,7 @@
                 editLinksDiv.appendChild(row);
             });
 
+            // Соцсети
             const editSocialsDiv = document.getElementById('editSocials');
             editSocialsDiv.innerHTML = '';
             if (!data.socials) data.socials = [];
@@ -1127,6 +1094,7 @@
                 editSocialsDiv.appendChild(row);
             });
 
+            // Автосохранение при вводе
             document.querySelectorAll('#editLinks input, #editSocials input, #editSocials select').forEach(el => {
                 el.addEventListener('input', autoSaveField);
             });
@@ -1134,27 +1102,6 @@
                 const el = document.getElementById(id);
                 if (el) el.addEventListener('input', autoSaveField);
             });
-
-            updateShareUI();
-        }
-
-        function updateShareUI() {
-            const generateBtn = document.getElementById('btnGenerate');
-            const shortenBtn = document.getElementById('btnShorten');
-            const urlDisplay = document.getElementById('shareUrlDisplay');
-            
-            if (currentShareUrl) {
-                urlDisplay.value = currentShareUrl;
-                generateBtn.textContent = '🔄 Обновить ссылку';
-                shortenBtn.style.display = '';
-                if (currentShareUrl.length < 200) {
-                    shortenBtn.style.display = 'none';
-                }
-            } else {
-                urlDisplay.value = 'Нажми «Создать ссылку»';
-                generateBtn.textContent = '✨ Создать ссылку';
-                shortenBtn.style.display = 'none';
-            }
         }
 
         function updateAvatarPreview() {
@@ -1181,10 +1128,7 @@
                 if (!data[parent][index]) return;
                 data[parent][index][field] = el.value;
             } else if (el.id === 'editAvatar') {
-                const val = el.value;
-                if (val && val.startsWith('http') && val !== '[загружено с устройства]') {
-                    data.avatar = val;
-                }
+                data.avatar = el.value;
             } else if (el.id === 'editName') {
                 data.name = el.value;
             } else if (el.id === 'editBio') {
@@ -1194,95 +1138,67 @@
             renderPublic();
         }
 
-        // ===== ЗАГРУЗКА НА IMGBB =====
-        async function handleAvatarUpload(event) {
+        // ===== ЗАГРУЗКА АВАТАРА С УСТРОЙСТВА =====
+        function handleAvatarUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
 
-            if (file.size > 10 * 1024 * 1024) {
-                showToast('❌ Файл слишком большой (макс 10MB)', true);
+            // Проверка размера (макс 2MB)
+            if (file.size > 2 * 1024 * 1024) {
+                showToast('❌ Файл слишком большой (макс 2MB)', true);
                 event.target.value = '';
                 return;
             }
 
+            // Проверка типа
             if (!file.type.startsWith('image/')) {
                 showToast('❌ Выберите изображение', true);
                 event.target.value = '';
                 return;
             }
 
-            // Показываем прогресс
-            const progressDiv = document.getElementById('uploadProgress');
-            const progressBar = document.getElementById('uploadProgressBar');
-            progressDiv.classList.add('active');
-            progressBar.style.width = '0%';
-            
-            // Сначала показываем локально для мгновенного отображения
             const reader = new FileReader();
             reader.onload = (e) => {
-                // Временно показываем локальную версию
-                data.avatar = e.target.result;
-                updateAvatarPreview();
-                renderPublic();
+                const base64 = e.target.result;
+                
+                // Сжимаем если нужно
+                const img = new Image();
+                img.onload = () => {
+                    let canvas = document.createElement('canvas');
+                    let ctx = canvas.getContext('2d');
+                    
+                    // Максимальный размер 400x400
+                    let width = img.width;
+                    let height = img.height;
+                    const maxSize = 400;
+                    
+                    if (width > maxSize || height > maxSize) {
+                        if (width > height) {
+                            height = (height / width) * maxSize;
+                            width = maxSize;
+                        } else {
+                            width = (width / height) * maxSize;
+                            height = maxSize;
+                        }
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    // Сжатие JPEG quality 0.8
+                    data.avatar = canvas.toDataURL('image/jpeg', 0.8);
+                    document.getElementById('editAvatar').value = '[загружено с устройства]';
+                    updateAvatarPreview();
+                    saveData();
+                    renderPublic();
+                    showToast('📷 Фото загружено!');
+                };
+                img.src = base64;
             };
             reader.readAsDataURL(file);
             
-            // Загружаем на ImgBB
-            try {
-                const formData = new FormData();
-                formData.append('image', file);
-                formData.append('key', IMGBB_API_KEY);
-                
-                const xhr = new XMLHttpRequest();
-                
-                const uploadedUrl = await new Promise((resolve, reject) => {
-                    xhr.upload.addEventListener('progress', (e) => {
-                        if (e.lengthComputable) {
-                            const percent = Math.round((e.loaded / e.total) * 100);
-                            progressBar.style.width = percent + '%';
-                        }
-                    });
-                    
-                    xhr.addEventListener('load', () => {
-                        if (xhr.status === 200) {
-                            try {
-                                const response = JSON.parse(xhr.responseText);
-                                if (response.success && response.data.url) {
-                                    resolve(response.data.url);
-                                } else {
-                                    reject(new Error('Ошибка ImgBB'));
-                                }
-                            } catch (e) {
-                                reject(new Error('Неверный ответ'));
-                            }
-                        } else {
-                            reject(new Error('HTTP ' + xhr.status));
-                        }
-                    });
-                    
-                    xhr.addEventListener('error', () => reject(new Error('Сетевая ошибка')));
-                    xhr.open('POST', 'https://api.imgbb.com/1/upload');
-                    xhr.send(formData);
-                });
-                
-                // Сохраняем URL
-                data.avatar = uploadedUrl;
-                document.getElementById('editAvatar').value = uploadedUrl;
-                updateAvatarPreview();
-                saveData();
-                renderPublic();
-                showToast('📷 Фото загружено на хостинг и будет видно всем!');
-                
-            } catch (error) {
-                console.error('Ошибка загрузки на ImgBB:', error);
-                // Оставляем base64 как fallback
-                saveData();
-                showToast('⚠️ Фото сохранено локально. Для публикации используйте URL-ссылку', true);
-            } finally {
-                progressDiv.classList.remove('active');
-                progressBar.style.width = '0%';
-            }
-            
+            // Сброс input для повторной загрузки того же файла
             event.target.value = '';
         }
 
@@ -1295,6 +1211,7 @@
             showToast('🗑 Аватар удалён');
         }
 
+        // ===== РАБОТА С ССЫЛКАМИ И СОЦСЕТЯМИ =====
         function addLink() {
             if (!data.links) data.links = [];
             data.links.push({ title: '', url: '' });
@@ -1341,10 +1258,12 @@
             data.name = document.getElementById('editName').value;
             data.bio = document.getElementById('editBio').value;
             
+            // Аватар из URL если вставлен
             const avatarUrl = document.getElementById('editAvatar').value;
-            if (avatarUrl && avatarUrl.startsWith('http') && avatarUrl !== '[загружено с устройства]') {
+            if (avatarUrl && avatarUrl !== '[загружено с устройства]' && avatarUrl.startsWith('http')) {
                 data.avatar = avatarUrl;
             }
+            // Иначе оставляем то что уже в data.avatar (мог быть загружен файл)
 
             const linkRows = document.querySelectorAll('#editLinks .link-row');
             data.links = [];
@@ -1366,102 +1285,58 @@
             showToast('✅ Сохранено!');
         }
 
-        // ===== ГЕНЕРАЦИЯ ССЫЛКИ =====
-        function generateShareUrl() {
+        // ===== ПУБЛИКАЦИЯ =====
+        function publishAndShare() {
+            // Сначала сохраняем
             saveAll();
             
-            // Копируем данные, НЕ включаем base64
+            // Создаём чистый объект данных без base64 если он огромный
             const cleanData = JSON.parse(JSON.stringify(data));
             
-            // Если аватар base64 — заменяем на пустую строку
+            // Если аватар это base64 и он больше 50KB, сжимаем
             if (cleanData.avatar && cleanData.avatar.startsWith('data:image')) {
-                showToast('⚠️ Загрузите фото на хостинг (кнопка «Загрузить фото»)', true);
-                // Можно попробовать сохранить в localStorage для текущего пользователя
-                cleanData.avatar = '';
+                if (cleanData.avatar.length > 50000) {
+                    // Создаём маленькую версию
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const ctx = canvas.getContext('2d');
+                        canvas.width = 150;
+                        canvas.height = 150;
+                        ctx.drawImage(img, 0, 0, 150, 150);
+                        cleanData.avatar = canvas.toDataURL('image/jpeg', 0.5);
+                        generateShareUrl(cleanData);
+                    };
+                    img.src = cleanData.avatar;
+                    return;
+                }
             }
             
+            generateShareUrl(cleanData);
+        }
+
+        function generateShareUrl(cleanData) {
             try {
                 const jsonStr = JSON.stringify(cleanData);
-                const encoded = compressLZ(jsonStr);
+                const encoded = compressData(jsonStr);
                 
+                // Формируем URL
                 const baseUrl = window.location.origin + window.location.pathname;
-                currentShareUrl = `${baseUrl}?d=${encodeURIComponent(encoded)}`;
+                const shareUrl = `${baseUrl}?d=${encodeURIComponent(encoded)}`;
                 
-                document.getElementById('shareUrlDisplay').value = currentShareUrl;
-                updateShareUI();
-                
-                const kb = (new Blob([jsonStr]).size / 1024).toFixed(1);
-                showToast(`🔗 Ссылка создана (${kb} KB)`);
-                
-                copyToClipboard(currentShareUrl);
-                
+                // Копируем
+                copyToClipboard(shareUrl);
+                showToast('🔗 Ссылка скопирована! Отправь её друзьям');
             } catch (e) {
-                showToast('❌ Ошибка создания ссылки', true);
-            }
-        }
-
-        function copyShareUrl() {
-            if (!currentShareUrl) {
-                showToast('⚠️ Сначала создайте ссылку', true);
-                return;
-            }
-            copyToClipboard(currentShareUrl);
-            showToast('📋 Скопировано!');
-        }
-
-        async function shortenUrl() {
-            if (!currentShareUrl) {
-                showToast('⚠️ Сначала создайте ссылку', true);
-                return;
-            }
-            
-            const btn = document.getElementById('btnShorten');
-            const originalText = btn.textContent;
-            btn.textContent = '⏳ Сокращаем...';
-            btn.disabled = true;
-            
-            try {
-                // Пробуем TinyURL
-                let response = await fetch(`https://tinyurl.com/api-create.php?url=${encodeURIComponent(currentShareUrl)}`);
-                
-                if (response.ok) {
-                    const shortUrl = await response.text();
-                    if (shortUrl && shortUrl.startsWith('http')) {
-                        currentShareUrl = shortUrl;
-                        document.getElementById('shareUrlDisplay').value = shortUrl;
-                        updateShareUI();
-                        copyToClipboard(shortUrl);
-                        showToast('✅ Короткая ссылка скопирована!');
-                        return;
-                    }
-                }
-                
-                // Fallback: is.gd
-                response = await fetch(`https://is.gd/create.php?format=simple&url=${encodeURIComponent(currentShareUrl)}`);
-                if (response.ok) {
-                    const shortUrl = await response.text();
-                    if (shortUrl && shortUrl.startsWith('http')) {
-                        currentShareUrl = shortUrl;
-                        document.getElementById('shareUrlDisplay').value = shortUrl;
-                        updateShareUI();
-                        copyToClipboard(shortUrl);
-                        showToast('✅ Короткая ссылка скопирована!');
-                        return;
-                    }
-                }
-                
-                throw new Error('Не удалось');
-            } catch (e) {
-                showToast('❌ Сервис недоступен. Используйте длинную ссылку', true);
-            } finally {
-                btn.textContent = originalText;
-                btn.disabled = false;
+                showToast('❌ Ошибка: данные слишком большие. Попробуйте уменьшить фото.', true);
             }
         }
 
         function copyToClipboard(text) {
             if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(text).catch(() => fallbackCopy(text));
+                navigator.clipboard.writeText(text).catch(() => {
+                    fallbackCopy(text);
+                });
             } else {
                 fallbackCopy(text);
             }
@@ -1476,17 +1351,23 @@
             document.body.appendChild(textArea);
             textArea.focus();
             textArea.select();
-            try { document.execCommand('copy'); } catch (err) {}
+            try {
+                document.execCommand('copy');
+            } catch (err) {
+                showToast('❌ Не удалось скопировать', true);
+            }
             document.body.removeChild(textArea);
         }
 
-        // ===== АДМИНКА =====
+        // ===== УПРАВЛЕНИЕ АДМИНКОЙ =====
         function openPasswordModal() {
             document.getElementById('passwordModal').classList.add('active');
             document.getElementById('passwordInput').value = '';
             document.getElementById('passwordError').classList.remove('show');
             document.body.style.overflow = 'hidden';
-            setTimeout(() => document.getElementById('passwordInput').focus(), 150);
+            setTimeout(() => {
+                document.getElementById('passwordInput').focus();
+            }, 150);
         }
 
         function closePasswordModal() {
@@ -1495,7 +1376,8 @@
         }
 
         function checkPassword() {
-            if (document.getElementById('passwordInput').value === ADMIN_PASSWORD) {
+            const input = document.getElementById('passwordInput').value;
+            if (input === ADMIN_PASSWORD) {
                 isAdmin = true;
                 closePasswordModal();
                 openAdmin();
@@ -1537,6 +1419,7 @@
             }
         }
 
+        // ===== ЭКСПОРТ / ИМПОРТ / СБРОС =====
         function exportJSON() {
             const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
@@ -1576,9 +1459,8 @@
         }
 
         function resetAll() {
-            if (confirm('Точно сбросить ВСЕ данные?')) {
+            if (confirm('Точно сбросить ВСЕ данные? Это действие нельзя отменить.')) {
                 data = JSON.parse(JSON.stringify(defaultData));
-                currentShareUrl = '';
                 saveData();
                 renderPublic();
                 renderAdmin();
@@ -1586,31 +1468,37 @@
             }
         }
 
+        // ===== TOAST =====
         function showToast(msg, isError = false) {
             const toast = document.getElementById('toast');
             toast.textContent = msg;
             toast.className = 'toast' + (isError ? ' error' : '');
             toast.classList.add('show');
             clearTimeout(toast._timeout);
-            toast._timeout = setTimeout(() => toast.classList.remove('show'), 2500);
+            toast._timeout = setTimeout(() => toast.classList.remove('show'), 2000);
         }
 
         // ===== ИНИЦИАЛИЗАЦИЯ =====
         document.addEventListener('DOMContentLoaded', () => {
-            loadData();
-            renderPublic();
-            
-            if (isPublicMode) {
-                document.getElementById('publicBadge').classList.add('show');
-                document.getElementById('adminEntryBtn').style.display = 'none';
-            }
-            
             document.getElementById('passwordInput').addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') checkPassword();
             });
             document.getElementById('passwordModal').addEventListener('click', (e) => {
                 if (e.target === document.getElementById('passwordModal')) closePasswordModal();
             });
+            
+            loadData();
+            renderPublic();
+            
+            // Если это share-ссылка и нет данных в URL, скрываем админ-кнопку
+            if (!isPublicMode) {
+                const urlParams = new URLSearchParams(window.location.search);
+                if (urlParams.get('d')) {
+                    isPublicMode = true;
+                    document.getElementById('publicBadge').classList.add('show');
+                    document.getElementById('adminEntryBtn').style.display = 'none';
+                }
+            }
         });
     </script>
 </body>
