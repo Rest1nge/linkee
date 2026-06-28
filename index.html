@@ -770,6 +770,7 @@
         }
     </style>
 </head>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <body>
 
     <!-- Индикатор публичного режима -->
@@ -880,6 +881,11 @@
         let isAdmin = false;
         let isPublicMode = false; // true если страница открыта по share-ссылке
 
+        // ===== SUPABASE КОНФИГУРАЦИЯ =====
+const SUPABASE_URL = 'https://qjgukzqxmdqjagkkywmq.supabase.co';   // ← замени
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqZ3VrenF4bWRxamFna2t5d21xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI1OTAzNzAsImV4cCI6MjA5ODE2NjM3MH0.LpstJITV8Gtu_DxctFdrPeGtobhf890ous6qDyATmxo';                     // ← замени
+
+const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         // ===== ДАННЫЕ ПО УМОЛЧАНИЮ =====
         const defaultData = {
             avatar: '',
@@ -917,52 +923,59 @@
         let data = { ...defaultData };
 
         // ===== ЗАГРУЗКА ДАННЫХ =====
-        function loadData() {
-            // 1. Пробуем загрузить из URL (share-ссылка)
-            const urlParams = new URLSearchParams(window.location.search);
-            const encodedData = urlParams.get('d');
-            
-            if (encodedData) {
-                try {
-                    const jsonStr = decompressData(encodedData);
-                    const parsed = JSON.parse(jsonStr);
-                    data = { ...defaultData, ...parsed };
-                    if (!Array.isArray(data.links)) data.links = [...defaultData.links];
-                    if (!Array.isArray(data.socials)) data.socials = [...defaultData.socials];
-                    isPublicMode = true;
-                    
-                    // Показываем индикатор
-                    document.getElementById('publicBadge').classList.add('show');
-                    // Скрываем кнопку админа
-                    document.getElementById('adminEntryBtn').style.display = 'none';
-                    
-                    return; // Данные из URL приоритетнее
-                } catch (e) {
-                    console.log('Не удалось распарсить данные из URL, пробуем localStorage');
-                }
-            }
+        async function loadData() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const encodedData = urlParams.get('d');
+    
+    if (encodedData) {
+        try {
+            const jsonStr = decompressData(encodedData);
+            const parsed = JSON.parse(jsonStr);
+            data = { ...defaultData, ...parsed };
+            isPublicMode = true;
+            document.getElementById('publicBadge').classList.add('show');
+            document.getElementById('adminEntryBtn').style.display = 'none';
+            return;
+        } catch (e) {}
+    }
 
-            // 2. Загружаем из localStorage
-            const saved = localStorage.getItem('mylinktree_data');
-            if (saved) {
-                try {
-                    const parsed = JSON.parse(saved);
-                    data = { ...defaultData, ...parsed };
-                    if (!Array.isArray(data.links)) data.links = [...defaultData.links];
-                    if (!Array.isArray(data.socials)) data.socials = [...defaultData.socials];
-                } catch (e) {
-                    data = { ...defaultData };
-                }
-            }
-            
-            isPublicMode = false;
-            document.getElementById('publicBadge').classList.remove('show');
-            document.getElementById('adminEntryBtn').style.display = '';
-        }
+    // Загрузка из Supabase
+    try {
+        const { data: profile } = await supabase
+            .from('link_profiles')
+            .select('data')
+            .eq('id', 'main')
+            .single();
 
-        function saveData() {
-            localStorage.setItem('mylinktree_data', JSON.stringify(data));
+        if (profile?.data) {
+            data = { ...defaultData, ...profile.data };
         }
+    } catch (e) {
+        console.log('Supabase не доступен, используем localStorage');
+    }
+
+    // Fallback на localStorage
+    const saved = localStorage.getItem('mylinktree_data');
+    if (saved && !data.avatar) {   // если из supabase ничего не пришло
+        try {
+            const parsed = JSON.parse(saved);
+            data = { ...defaultData, ...parsed };
+        } catch (e) {}
+    }
+}
+
+        async function saveData() {
+    localStorage.setItem('mylinktree_data', JSON.stringify(data));
+    
+    // Сохраняем в облако
+    try {
+        await supabase
+            .from('link_profiles')
+            .upsert({ id: 'main', data: data }, { onConflict: 'id' });
+    } catch (e) {
+        console.error('Не удалось сохранить в облако', e);
+    }
+}
 
         // ===== СЖАТИЕ ДАННЫХ ДЛЯ URL =====
         function compressData(jsonStr) {
@@ -1118,7 +1131,7 @@
                       .replace(/</g, '&lt;').replace(/>/g, '&gt;');
         }
 
-        function autoSaveField(e) {
+        async function autoSaveField(e) {
             const el = e.target;
             const index = el.dataset.index;
             const field = el.dataset.field;
@@ -1254,7 +1267,7 @@
             renderAdmin();
         }
 
-        function saveAll() {
+    async    function saveAll() {
             data.name = document.getElementById('editName').value;
             data.bio = document.getElementById('editBio').value;
             
@@ -1286,7 +1299,7 @@
         }
 
         // ===== ПУБЛИКАЦИЯ =====
-        function publishAndShare() {
+        async function publishAndShare() {
             // Сначала сохраняем
             saveAll();
             
@@ -1487,8 +1500,9 @@
                 if (e.target === document.getElementById('passwordModal')) closePasswordModal();
             });
             
-            loadData();
-            renderPublic();
+            loadData().then(() => {
+                renderPublic();
+            });
             
             // Если это share-ссылка и нет данных в URL, скрываем админ-кнопку
             if (!isPublicMode) {
