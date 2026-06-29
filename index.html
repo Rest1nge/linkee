@@ -25,7 +25,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, Roboto, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
             background: var(--bg);
             color: var(--text);
             min-height: 100dvh;
@@ -89,10 +89,6 @@
         
         .link-btn:active { transform: scale(0.98); background: var(--btn-hover); border-color: var(--accent); }
         
-        @media (hover: hover) {
-            .link-btn:hover { background: var(--btn-hover); border-color: var(--accent); transform: translateY(-2px); }
-        }
-        
         .social-icons {
             display: flex;
             justify-content: center;
@@ -115,9 +111,6 @@
         }
         
         .social-icon:active { color: var(--accent); transform: scale(1.2); }
-        @media (hover: hover) {
-            .social-icon:hover { color: var(--accent); }
-        }
         
         .admin-entry {
             margin-top: 28px;
@@ -135,7 +128,6 @@
         
         .admin-entry:hover { opacity: 1; color: var(--accent); border-color: var(--accent); }
         
-        /* Модалка пароля */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -208,7 +200,6 @@
             75% { transform: translateX(6px); }
         }
         
-        /* Админка */
         .admin-panel {
             display: none;
             text-align: left;
@@ -409,12 +400,12 @@
         <div class="bio" id="pubBio"></div>
         <div class="links" id="pubLinks"></div>
         <div class="social-icons" id="pubSocials"></div>
-        <button class="admin-entry" onclick="openPasswordModal()">🔑 Админ</button>
+        <button class="admin-entry" id="adminBtn">🔑 Админ</button>
     </div>
 
     <div class="admin-panel" id="adminPanel">
         <div class="admin-header">
-            <button class="back-btn" onclick="closeAdmin()">←</button>
+            <button class="back-btn" id="backBtn">←</button>
             <h3>⚙️ Настройки</h3>
             <span class="save-status" id="saveStatus">
                 <span class="status-dot saved"></span> Сохранено
@@ -437,14 +428,14 @@
         <hr class="divider">
         <span class="section-label">🔗 Ссылки</span>
         <div id="editLinks"></div>
-        <button class="btn-small" onclick="addLink()">+ Добавить ссылку</button>
+        <button class="btn-small" id="addLinkBtn">+ Добавить ссылку</button>
 
         <hr class="divider">
         <span class="section-label">🌐 Соцсети</span>
         <div id="editSocials"></div>
-        <button class="btn-small" onclick="addSocial()">+ Добавить соцсеть</button>
+        <button class="btn-small" id="addSocialBtn">+ Добавить соцсеть</button>
 
-        <button class="btn btn-primary" style="margin-top:20px;" onclick="saveToSupabase()">💾 Сохранить в облако</button>
+        <button class="btn btn-primary" style="margin-top:20px;" id="saveBtn">💾 Сохранить в облако</button>
         <p style="font-size:10px;color:var(--sub);text-align:center;margin-top:8px;">
             Данные хранятся в Supabase и видны всем
         </p>
@@ -457,8 +448,8 @@
             <input type="password" id="passwordInput" placeholder="Пароль" maxlength="30">
             <div class="error-msg" id="passwordError">❌ Неверный пароль</div>
             <div class="modal-buttons">
-                <button class="btn-cancel" onclick="closePasswordModal()">Отмена</button>
-                <button class="btn-submit" onclick="checkPassword()">Войти</button>
+                <button class="btn-cancel" id="cancelBtn">Отмена</button>
+                <button class="btn-submit" id="submitBtn">Войти</button>
             </div>
         </div>
     </div>
@@ -469,23 +460,15 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
-        // ===== НАСТРОЙКИ SUPABASE =====
-        // Замени эти значения на свои из Supabase Dashboard → Settings → API
-        const SUPABASE_URL = 'https://qjgukzqxmdqjagkkywmq.supabase.co';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqZ3VrenF4bWRxamFna2t5d21xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI1OTAzNzAsImV4cCI6MjA5ODE2NjM3MH0.LpstJITV8Gtu_DxctFdrPeGtobhf890ous6qDyATmxo';
-        
+        // ===== НАСТРОЙКИ (замени на свои) =====
+        const SUPABASE_URL = 'https://твой-проект.supabase.co';
+        const SUPABASE_ANON_KEY = 'твой-anon-key';
         const ADMIN_PASSWORD = 'David';
+        
+        // ===== ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ =====
+        let db = null;
         let isAdmin = false;
-        let supabase;
-
-        // Инициализация Supabase
-        try {
-            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        } catch (e) {
-            console.error('Supabase не инициализирован');
-        }
-
-        const defaultData = {
+        let data = {
             avatar: '',
             name: 'Твоё Имя',
             bio: 'Здесь может быть твоё описание.\nРасскажи о себе в пару строк.',
@@ -517,17 +500,26 @@
             { value: 'email', label: 'Email', icon: 'fa-envelope' },
         ];
 
-        let data = JSON.parse(JSON.stringify(defaultData));
+        // ===== ИНИЦИАЛИЗАЦИЯ SUPABASE =====
+        function initSupabase() {
+            try {
+                db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                return true;
+            } catch (e) {
+                console.error('Ошибка Supabase:', e);
+                return false;
+            }
+        }
 
-        // ===== ЗАГРУЗКА ИЗ SUPABASE =====
-        async function loadFromSupabase() {
-            if (!supabase) {
-                loadLocalFallback();
+        // ===== ЗАГРУЗКА ДАННЫХ =====
+        async function loadData() {
+            if (!db) {
+                loadFromLocalStorage();
                 return;
             }
             
             try {
-                const { data: profile, error } = await supabase
+                const { data: profile, error } = await db
                     .from('profiles')
                     .select('*')
                     .eq('id', 1)
@@ -536,51 +528,43 @@
                 if (error) throw error;
                 
                 if (profile) {
-                    data = {
-                        avatar: profile.avatar || '',
-                        name: profile.name || '',
-                        bio: profile.bio || '',
-                        links: profile.links || [...defaultData.links],
-                        socials: profile.socials || [...defaultData.socials],
-                    };
+                    data.avatar = profile.avatar || '';
+                    data.name = profile.name || '';
+                    data.bio = profile.bio || '';
+                    data.links = profile.links || [];
+                    data.socials = profile.socials || [];
                 }
             } catch (e) {
                 console.log('Загрузка из Supabase не удалась:', e.message);
-                loadLocalFallback();
+                loadFromLocalStorage();
             }
             
             renderPublic();
         }
 
-        function loadLocalFallback() {
+        function loadFromLocalStorage() {
             const saved = localStorage.getItem('mylinktree_data');
             if (saved) {
                 try {
                     const parsed = JSON.parse(saved);
-                    data = { ...defaultData, ...parsed };
-                } catch (e) {
-                    data = JSON.parse(JSON.stringify(defaultData));
-                }
+                    data = { ...data, ...parsed };
+                } catch (e) {}
             }
         }
 
         // ===== СОХРАНЕНИЕ В SUPABASE =====
-        async function saveToSupabase() {
-            if (!supabase) {
+        async function saveToCloud() {
+            if (!db) {
                 showToast('❌ Supabase не подключён', true);
                 return;
             }
             
-            // Собираем данные из полей
             collectFormData();
-            
-            // Сохраняем локально как резерв
             localStorage.setItem('mylinktree_data', JSON.stringify(data));
-            
             setSaveStatus('saving');
             
             try {
-                const { error } = await supabase
+                const { error } = await db
                     .from('profiles')
                     .upsert({
                         id: 1,
@@ -626,12 +610,10 @@
         }
 
         function setSaveStatus(status) {
-            const dot = document.querySelector('#saveStatus .status-dot');
-            const text = document.querySelector('#saveStatus');
-            dot.className = 'status-dot ' + status;
-            if (status === 'saved') text.innerHTML = '<span class="status-dot saved"></span> Сохранено';
-            else if (status === 'saving') text.innerHTML = '<span class="status-dot saving"></span> Сохранение...';
-            else if (status === 'error') text.innerHTML = '<span class="status-dot error"></span> Ошибка';
+            const statusEl = document.getElementById('saveStatus');
+            const icons = { saved: '🟢', saving: '🟡', error: '🔴' };
+            const texts = { saved: 'Сохранено', saving: 'Сохранение...', error: 'Ошибка' };
+            statusEl.innerHTML = `<span class="status-dot ${status}"></span> ${texts[status]}`;
         }
 
         // ===== ОТРИСОВКА =====
@@ -641,12 +623,12 @@
                 avatarEl.src = data.avatar;
             } else {
                 avatarEl.src = 'data:image/svg+xml,' + encodeURIComponent(
-                    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23333" width="100" height="100"/><text x="50" y="58" text-anchor="middle" fill="%23777" font-size="40" font-family="sans-serif">?</text></svg>'
+                    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23333" width="100" height="100"/><text x="50" y="58" text-anchor="middle" fill="%23777" font-size="40">?</text></svg>'
                 );
             }
             avatarEl.onerror = () => {
                 avatarEl.src = 'data:image/svg+xml,' + encodeURIComponent(
-                    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23333" width="100" height="100"/><text x="50" y="58" text-anchor="middle" fill="%23777" font-size="40" font-family="sans-serif">?</text></svg>'
+                    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23333" width="100" height="100"/><text x="50" y="58" text-anchor="middle" fill="%23777" font-size="40">?</text></svg>'
                 );
             };
 
@@ -702,7 +684,7 @@
                 row.innerHTML = `
                     <input type="text" placeholder="Название" value="${esc(link.title || '')}" data-index="${i}" data-field="title" maxlength="80">
                     <input type="url" placeholder="https://..." value="${esc(link.url || '')}" data-index="${i}" data-field="url">
-                    <button class="del-btn" onclick="deleteLink(${i})">×</button>
+                    <button class="del-btn" data-action="deleteLink" data-index="${i}">×</button>
                 `;
                 editLinksDiv.appendChild(row);
             });
@@ -719,39 +701,36 @@
                 row.innerHTML = `
                     <select data-index="${i}" data-field="platform">${options}</select>
                     <input type="url" placeholder="https://..." value="${esc(s.url || '')}" data-index="${i}" data-field="url">
-                    <button class="del-btn" onclick="deleteSocial(${i})">×</button>
+                    <button class="del-btn" data-action="deleteSocial" data-index="${i}">×</button>
                 `;
                 editSocialsDiv.appendChild(row);
             });
 
             setSaveStatus('saved');
+            
+            // Делегирование событий для кнопок удаления
+            document.querySelectorAll('[data-action="deleteLink"]').forEach(btn => {
+                btn.onclick = function() {
+                    const i = parseInt(this.dataset.index);
+                    data.links.splice(i, 1);
+                    renderAdmin();
+                };
+            });
+            
+            document.querySelectorAll('[data-action="deleteSocial"]').forEach(btn => {
+                btn.onclick = function() {
+                    const i = parseInt(this.dataset.index);
+                    data.socials.splice(i, 1);
+                    renderAdmin();
+                };
+            });
         }
 
         function esc(s) {
             return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         }
 
-        function addLink() {
-            data.links.push({ title: '', url: '' });
-            renderAdmin();
-        }
-
-        function deleteLink(i) {
-            data.links.splice(i, 1);
-            renderAdmin();
-        }
-
-        function addSocial() {
-            data.socials.push({ platform: 'telegram', url: '' });
-            renderAdmin();
-        }
-
-        function deleteSocial(i) {
-            data.socials.splice(i, 1);
-            renderAdmin();
-        }
-
-        // ===== АДМИНКА =====
+        // ===== УПРАВЛЕНИЕ АДМИНКОЙ =====
         function openPasswordModal() {
             document.getElementById('passwordModal').classList.add('active');
             document.getElementById('passwordInput').value = '';
@@ -775,9 +754,6 @@
                 err.classList.add('show');
                 document.getElementById('passwordInput').value = '';
                 document.getElementById('passwordInput').focus();
-                err.style.animation = 'none';
-                err.offsetHeight;
-                err.style.animation = 'shake 0.3s ease';
             }
         }
 
@@ -804,29 +780,48 @@
             toast._timeout = setTimeout(() => toast.classList.remove('show'), 2500);
         }
 
-        // ===== ИНИЦИАЛИЗАЦИЯ =====
+        // ===== ПРИВЯЗКА СОБЫТИЙ =====
         document.addEventListener('DOMContentLoaded', () => {
-            loadFromSupabase();
+            // Инициализация Supabase
+            initSupabase();
+            loadData();
             
-            document.getElementById('passwordInput').addEventListener('keydown', (e) => {
+            // Кнопка Админ
+            document.getElementById('adminBtn').onclick = openPasswordModal;
+            
+            // Модалка
+            document.getElementById('cancelBtn').onclick = closePasswordModal;
+            document.getElementById('submitBtn').onclick = checkPassword;
+            document.getElementById('passwordInput').onkeydown = (e) => {
                 if (e.key === 'Enter') checkPassword();
-            });
-            
-            document.getElementById('passwordModal').addEventListener('click', (e) => {
+            };
+            document.getElementById('passwordModal').onclick = (e) => {
                 if (e.target === document.getElementById('passwordModal')) closePasswordModal();
-            });
-
-            // Автосохранение в localStorage при редактировании
+            };
+            
+            // Админка
+            document.getElementById('backBtn').onclick = closeAdmin;
+            document.getElementById('saveBtn').onclick = saveToCloud;
+            document.getElementById('addLinkBtn').onclick = () => {
+                data.links.push({ title: '', url: '' });
+                renderAdmin();
+            };
+            document.getElementById('addSocialBtn').onclick = () => {
+                data.socials.push({ platform: 'telegram', url: '' });
+                renderAdmin();
+            };
+            
+            // Автосохранение в localStorage
             ['editAvatar', 'editName', 'editBio'].forEach(id => {
                 const el = document.getElementById(id);
                 if (el) {
-                    el.addEventListener('input', () => {
+                    el.oninput = () => {
                         collectFormData();
                         localStorage.setItem('mylinktree_data', JSON.stringify(data));
                         setSaveStatus('saving');
                         clearTimeout(window._saveTimeout);
                         window._saveTimeout = setTimeout(() => setSaveStatus('saved'), 1500);
-                    });
+                    };
                 }
             });
         });
