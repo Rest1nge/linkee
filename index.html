@@ -14,50 +14,31 @@
             --btn: #2a2a2a;
             --btn-hover: #3a3a3a;
             --accent: #7289da;
-            --accent-hover: #5b6eae;
             --border: #2a2a2a;
             --input: #111;
             --danger: #ff4757;
-            --danger-bg: #3a1010;
             --success: #2ed573;
-            --radius-sm: 8px;
             --radius: 12px;
-            --radius-lg: 16px;
-            --shadow: 0 4px 6px rgba(0,0,0,0.3);
+            --radius-sm: 8px;
         }
         
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, Roboto, sans-serif;
             background: var(--bg);
             color: var(--text);
-            min-height: 100vh;
             min-height: 100dvh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 16px;
-            -webkit-font-smoothing: antialiased;
         }
         
         .container {
             width: 100%;
             max-width: 480px;
             text-align: center;
-            position: relative;
-        }
-        
-        /* Аватар и имя */
-        .avatar-wrapper {
-            position: relative;
-            display: inline-block;
-            margin-bottom: 16px;
         }
         
         .avatar {
@@ -65,10 +46,9 @@
             height: 96px;
             border-radius: 50%;
             object-fit: cover;
-            display: block;
             border: 3px solid var(--border);
             background: var(--card);
-            box-shadow: var(--shadow);
+            margin-bottom: 16px;
         }
         
         .name {
@@ -83,16 +63,13 @@
             font-size: 14px;
             margin-bottom: 28px;
             white-space: pre-line;
-            word-break: break-word;
             padding: 0 8px;
         }
         
-        /* Ссылки */
         .links {
             display: flex;
             flex-direction: column;
             gap: 10px;
-            margin-bottom: 12px;
         }
         
         .link-btn {
@@ -105,31 +82,17 @@
             border-radius: var(--radius);
             font-size: 15px;
             font-weight: 500;
-            transition: all 0.2s ease;
             border: 1px solid var(--border);
-            text-align: center;
             word-break: break-word;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-            -webkit-user-select: none;
-            user-select: none;
+            transition: all 0.2s;
         }
         
-        .link-btn:active {
-            transform: scale(0.98);
-            background: var(--btn-hover);
-            border-color: var(--accent);
-        }
+        .link-btn:active { transform: scale(0.98); background: var(--btn-hover); border-color: var(--accent); }
         
         @media (hover: hover) {
-            .link-btn:hover {
-                background: var(--btn-hover);
-                border-color: var(--accent);
-                transform: translateY(-2px);
-                box-shadow: 0 4px 12px rgba(114,137,218,0.2);
-            }
+            .link-btn:hover { background: var(--btn-hover); border-color: var(--accent); transform: translateY(-2px); }
         }
         
-        /* Соцсети */
         .social-icons {
             display: flex;
             justify-content: center;
@@ -142,28 +105,20 @@
             color: var(--sub);
             font-size: 22px;
             text-decoration: none;
-            transition: all 0.2s;
             padding: 8px;
+            min-width: 44px;
+            min-height: 44px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            min-width: 44px;
-            min-height: 44px;
+            transition: all 0.2s;
         }
         
-        .social-icon:active {
-            color: var(--accent);
-            transform: scale(1.2);
-        }
-        
+        .social-icon:active { color: var(--accent); transform: scale(1.2); }
         @media (hover: hover) {
-            .social-icon:hover {
-                color: var(--accent);
-                transform: scale(1.1);
-            }
+            .social-icon:hover { color: var(--accent); }
         }
         
-        /* Кнопка входа в админку */
         .admin-entry {
             margin-top: 28px;
             font-size: 13px;
@@ -172,69 +127,36 @@
             border: 1px solid transparent;
             cursor: pointer;
             opacity: 0.3;
-            transition: all 0.3s;
             padding: 8px 16px;
             border-radius: 20px;
             min-height: 44px;
+            transition: all 0.3s;
         }
         
-        .admin-entry:active,
-        .admin-entry:hover {
-            opacity: 1;
-            color: var(--accent);
-            border-color: var(--accent);
-        }
+        .admin-entry:hover { opacity: 1; color: var(--accent); border-color: var(--accent); }
         
-        /* Индикатор публичного режима */
-        .public-badge {
-            display: none;
-            position: fixed;
-            top: 12px;
-            right: 12px;
-            background: var(--accent);
-            color: #fff;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-            z-index: 50;
-            box-shadow: 0 2px 8px rgba(114,137,218,0.3);
-        }
-        
-        .public-badge.show {
-            display: block;
-        }
-        
-        /* Модальное окно пароля */
+        /* Модалка пароля */
         .modal-overlay {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            height: 100dvh;
+            inset: 0;
             background: rgba(0,0,0,0.8);
             z-index: 100;
             justify-content: center;
             align-items: center;
             padding: 20px;
             backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
         }
         
-        .modal-overlay.active {
-            display: flex;
-        }
+        .modal-overlay.active { display: flex; }
         
         .modal {
             background: var(--card);
-            border-radius: var(--radius-lg);
+            border-radius: 16px;
             padding: 28px 24px;
             width: 100%;
             max-width: 360px;
             border: 1px solid var(--border);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
             animation: modalIn 0.25s ease;
         }
         
@@ -243,17 +165,8 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
         
-        .modal h3 {
-            margin-bottom: 6px;
-            font-size: 18px;
-            color: var(--text);
-        }
-        
-        .modal p {
-            font-size: 13px;
-            color: var(--sub);
-            margin-bottom: 16px;
-        }
+        .modal h3 { margin-bottom: 6px; font-size: 18px; }
+        .modal p { font-size: 13px; color: var(--sub); margin-bottom: 16px; }
         
         .modal input {
             width: 100%;
@@ -266,17 +179,11 @@
             margin-bottom: 12px;
             font-family: inherit;
             outline: none;
-            transition: border-color 0.2s;
         }
         
-        .modal input:focus {
-            border-color: var(--accent);
-        }
+        .modal input:focus { border-color: var(--accent); }
         
-        .modal-buttons {
-            display: flex;
-            gap: 8px;
-        }
+        .modal-buttons { display: flex; gap: 8px; }
         
         .modal-buttons button {
             flex: 1;
@@ -287,40 +194,13 @@
             cursor: pointer;
             border: none;
             font-family: inherit;
-            transition: all 0.2s;
             min-height: 44px;
         }
         
-        .btn-submit {
-            background: var(--accent);
-            color: #fff;
-        }
-        
-        .btn-submit:active {
-            background: var(--accent-hover);
-            transform: scale(0.97);
-        }
-        
-        .btn-cancel {
-            background: var(--btn);
-            color: var(--text);
-        }
-        
-        .btn-cancel:active {
-            background: var(--btn-hover);
-        }
-        
-        .modal .error-msg {
-            color: var(--danger);
-            font-size: 12px;
-            margin-bottom: 8px;
-            display: none;
-        }
-        
-        .modal .error-msg.show {
-            display: block;
-            animation: shake 0.3s ease;
-        }
+        .btn-submit { background: var(--accent); color: #fff; }
+        .btn-cancel { background: var(--btn); color: var(--text); }
+        .error-msg { color: var(--danger); font-size: 12px; display: none; margin-bottom: 8px; }
+        .error-msg.show { display: block; animation: shake 0.3s ease; }
         
         @keyframes shake {
             0%,100% { transform: translateX(0); }
@@ -328,24 +208,18 @@
             75% { transform: translateX(6px); }
         }
         
-        /* Админ-панель */
+        /* Админка */
         .admin-panel {
             display: none;
-            margin-top: 0;
             text-align: left;
             background: var(--card);
-            border-radius: var(--radius-lg);
+            border-radius: 16px;
             padding: 20px 18px;
             border: 1px solid var(--border);
-            box-shadow: var(--shadow);
         }
         
-        .admin-panel.active {
-            display: block;
-            animation: modalIn 0.3s ease;
-        }
+        .admin-panel.active { display: block; animation: modalIn 0.3s ease; }
         
-        /* Шапка админки с кнопкой назад */
         .admin-header {
             display: flex;
             align-items: center;
@@ -366,50 +240,11 @@
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
-            transition: all 0.2s;
-            min-width: 40px;
         }
         
-        .back-btn:active {
-            background: var(--btn-hover);
-            border-color: var(--accent);
-            transform: scale(0.95);
-        }
+        .admin-header h3 { font-size: 17px; color: var(--accent); flex: 1; }
         
-        @media (hover: hover) {
-            .back-btn:hover {
-                background: var(--btn-hover);
-                border-color: var(--accent);
-            }
-        }
-        
-        .admin-header h3 {
-            font-size: 17px;
-            color: var(--accent);
-            margin: 0;
-            flex: 1;
-        }
-        
-        .admin-header .logout-btn {
-            background: transparent;
-            border: 1px solid var(--border);
-            color: var(--sub);
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            cursor: pointer;
-            transition: all 0.2s;
-            white-space: nowrap;
-        }
-        
-        .admin-header .logout-btn:active {
-            color: var(--danger);
-            border-color: var(--danger);
-        }
-        
-        .form-group {
-            margin-bottom: 14px;
-        }
+        .form-group { margin-bottom: 14px; }
         
         .form-group label {
             display: block;
@@ -421,8 +256,7 @@
             font-weight: 600;
         }
         
-        .form-group input,
-        .form-group textarea {
+        .form-group input, .form-group textarea {
             width: 100%;
             padding: 11px 14px;
             background: var(--input);
@@ -431,95 +265,19 @@
             color: var(--text);
             font-size: 14px;
             font-family: inherit;
-            resize: vertical;
             outline: none;
-            transition: border-color 0.2s;
-            -webkit-appearance: none;
         }
         
-        .form-group input:focus,
-        .form-group textarea:focus {
-            border-color: var(--accent);
-        }
+        .form-group textarea { min-height: 45px; max-height: 120px; resize: vertical; }
         
-        .form-group textarea { 
-            min-height: 45px; 
-            max-height: 120px;
-        }
-        
-        /* Загрузка аватара */
-        .avatar-upload-area {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        
-        .avatar-preview-small {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--border);
-            flex-shrink: 0;
-            background: var(--input);
-        }
-        
-        .avatar-upload-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            flex: 1;
-            min-width: 140px;
-        }
-        
-        .btn-upload {
-            padding: 10px 16px;
-            background: var(--btn);
-            color: var(--text);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-size: 13px;
-            text-align: center;
-            transition: all 0.2s;
-            font-family: inherit;
-            min-height: 40px;
-        }
-        
-        .btn-upload:active {
-            background: var(--btn-hover);
-            border-color: var(--accent);
-        }
-        
-        .btn-remove-avatar {
-            padding: 6px 12px;
-            background: transparent;
-            color: var(--danger);
-            border: 1px solid transparent;
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            font-size: 11px;
-            transition: all 0.2s;
-            font-family: inherit;
-        }
-        
-        .btn-remove-avatar:active {
-            border-color: var(--danger);
-            background: var(--danger-bg);
-        }
-        
-        .link-row,
-        .social-row {
+        .link-row, .social-row {
             display: flex;
             gap: 6px;
             margin-bottom: 8px;
             align-items: center;
-            flex-wrap: wrap;
         }
         
-        .link-row input,
-        .social-row input {
+        .link-row input, .social-row input {
             flex: 1;
             min-width: 100px;
             padding: 10px 12px;
@@ -529,12 +287,6 @@
             color: var(--text);
             font-size: 13px;
             outline: none;
-            -webkit-appearance: none;
-        }
-        
-        .link-row input:focus,
-        .social-row input:focus {
-            border-color: var(--accent);
         }
         
         .social-row select {
@@ -545,18 +297,11 @@
             border-radius: 6px;
             color: var(--text);
             font-size: 12px;
-            flex-shrink: 0;
             outline: none;
-            -webkit-appearance: none;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23aaaaaa' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 8px center;
-            padding-right: 28px;
         }
         
         .del-btn {
-            background: var(--danger-bg);
+            background: #3a1010;
             color: var(--danger);
             border: none;
             width: 36px;
@@ -565,16 +310,6 @@
             cursor: pointer;
             font-size: 18px;
             flex-shrink: 0;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 36px;
-        }
-        
-        .del-btn:active {
-            background: #5a1818;
-            transform: scale(0.9);
         }
         
         .btn {
@@ -584,51 +319,11 @@
             cursor: pointer;
             font-size: 14px;
             font-weight: 600;
-            transition: all 0.2s;
             font-family: inherit;
             min-height: 44px;
-            -webkit-user-select: none;
-            user-select: none;
         }
         
-        .btn:active {
-            transform: scale(0.97);
-        }
-        
-        .btn-primary {
-            background: var(--accent);
-            color: #fff;
-            width: 100%;
-        }
-        
-        .btn-primary:active {
-            background: var(--accent-hover);
-        }
-        
-        .btn-outline {
-            background: transparent;
-            color: var(--accent);
-            border: 1px solid var(--accent);
-            margin-top: 8px;
-            width: 100%;
-        }
-        
-        .btn-outline:active {
-            background: var(--accent);
-            color: #fff;
-        }
-        
-        .btn-outline.danger {
-            border-color: var(--danger);
-            color: var(--danger);
-            margin-top: 8px;
-        }
-        
-        .btn-outline.danger:active {
-            background: var(--danger);
-            color: #fff;
-        }
-        
+        .btn-primary { background: var(--accent); color: #fff; width: 100%; }
         .btn-small {
             padding: 8px 14px;
             font-size: 12px;
@@ -640,20 +335,9 @@
             width: 100%;
             margin-top: 4px;
             min-height: 40px;
-            font-weight: 500;
-            transition: all 0.2s;
         }
         
-        .btn-small:active {
-            background: var(--btn-hover);
-            border-color: var(--accent);
-        }
-        
-        .divider {
-            border: none;
-            border-top: 1px solid var(--border);
-            margin: 14px 0;
-        }
+        .divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
         
         .section-label {
             font-size: 11px;
@@ -665,59 +349,30 @@
             display: block;
         }
         
-        .admin-footer {
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+        
+        .status-dot.saved { background: var(--success); }
+        .status-dot.saving { background: #f1c40f; animation: pulse 1s infinite; }
+        .status-dot.error { background: var(--danger); }
+        
+        @keyframes pulse {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        .save-status {
             font-size: 10px;
             color: var(--sub);
-            text-align: center;
-            margin-top: 10px;
-            opacity: 0.6;
+            text-align: right;
+            margin-top: 4px;
         }
         
-        /* Инфо-блок с share-ссылкой */
-        .share-info {
-            background: var(--input);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 12px;
-            margin-top: 12px;
-            font-size: 12px;
-            color: var(--sub);
-            text-align: center;
-        }
-        
-        .share-info .share-url {
-            display: block;
-            color: var(--accent);
-            word-break: break-all;
-            margin: 6px 0;
-            font-size: 11px;
-            background: var(--bg);
-            padding: 8px;
-            border-radius: 4px;
-            user-select: all;
-            -webkit-user-select: all;
-        }
-        
-        .btn-copy {
-            padding: 6px 14px;
-            background: var(--accent);
-            color: #fff;
-            border: none;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: 600;
-            font-family: inherit;
-            transition: all 0.2s;
-            min-height: 36px;
-        }
-        
-        .btn-copy:active {
-            background: var(--accent-hover);
-            transform: scale(0.95);
-        }
-        
-        /* Toast */
         .toast {
             position: fixed;
             bottom: 30px;
@@ -732,91 +387,44 @@
             z-index: 999;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
-            box-shadow: 0 8px 24px rgba(46,213,115,0.3);
-            white-space: nowrap;
+            transition: opacity 0.3s;
         }
         
-        .toast.show {
-            opacity: 1;
-        }
+        .toast.show { opacity: 1; }
+        .toast.error { background: var(--danger); color: #fff; }
         
-        .toast.error {
-            background: var(--danger);
-            color: #fff;
-            box-shadow: 0 8px 24px rgba(255,71,87,0.3);
-        }
-        
-        /* Плавный скролл */
-        html {
-            scroll-behavior: smooth;
-        }
-        
-        /* Отключаем зум на инпутах в iOS */
-        @supports (-webkit-touch-callout: none) {
-            input, textarea, select {
-                font-size: 16px !important;
-            }
-        }
-        
-        /* Узкие экраны */
         @media (max-width: 380px) {
             body { padding: 12px; }
             .avatar { width: 80px; height: 80px; }
             .link-btn { padding: 13px 16px; font-size: 14px; }
             .admin-panel { padding: 16px 14px; }
-            .social-row select { width: 75px; font-size: 11px; }
-            .avatar-upload-area { flex-direction: column; align-items: flex-start; }
         }
     </style>
 </head>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <body>
 
-    <!-- Индикатор публичного режима -->
-    <div class="public-badge" id="publicBadge">🌐 Публичная версия</div>
-
-    <!-- Публичный вид -->
     <div class="container" id="publicView">
-        <div class="avatar-wrapper">
-            <img class="avatar" id="pubAvatar" src="" alt="Avatar">
-        </div>
+        <img class="avatar" id="pubAvatar" src="" alt="Avatar">
         <div class="name" id="pubName"></div>
         <div class="bio" id="pubBio"></div>
         <div class="links" id="pubLinks"></div>
         <div class="social-icons" id="pubSocials"></div>
-        <button class="admin-entry" id="adminEntryBtn" onclick="openPasswordModal()" title="Вход для администратора">
-            🔑 Админ
-        </button>
+        <button class="admin-entry" onclick="openPasswordModal()">🔑 Админ</button>
     </div>
 
-    <!-- Админ-панель -->
     <div class="admin-panel" id="adminPanel">
         <div class="admin-header">
-            <button class="back-btn" onclick="closeAdmin()" title="Назад к ссылкам">←</button>
+            <button class="back-btn" onclick="closeAdmin()">←</button>
             <h3>⚙️ Настройки</h3>
-            <button class="logout-btn" onclick="logout()" title="Выйти">Выйти</button>
+            <span class="save-status" id="saveStatus">
+                <span class="status-dot saved"></span> Сохранено
+            </span>
         </div>
 
-        <!-- Загрузка аватара -->
         <div class="form-group">
-            <label>📷 Аватар</label>
-            <div class="avatar-upload-area">
-                <img class="avatar-preview-small" id="avatarPreviewSmall" src="" alt="Preview">
-                <div class="avatar-upload-buttons">
-                    <button class="btn-upload" onclick="document.getElementById('avatarFileInput').click()">
-                        📁 Загрузить фото
-                    </button>
-                    <button class="btn-remove-avatar" onclick="removeAvatar()">
-                        ✕ Удалить аватар
-                    </button>
-                </div>
-                <input type="file" id="avatarFileInput" accept="image/*" style="display:none" onchange="handleAvatarUpload(event)">
-            </div>
-            <input type="url" id="editAvatar" placeholder="Или вставьте ссылку на фото..." inputmode="url" style="margin-top:8px;">
-            <small style="color:var(--sub);font-size:10px;display:block;margin-top:4px;">Поддерживаются оба способа: загрузка файла или ссылка</small>
+            <label>📷 Аватар (ссылка)</label>
+            <input type="url" id="editAvatar" placeholder="https://example.com/photo.jpg">
         </div>
-
         <div class="form-group">
             <label>👤 Имя</label>
             <input type="text" id="editName" placeholder="Твоё имя" maxlength="60">
@@ -836,31 +444,17 @@
         <div id="editSocials"></div>
         <button class="btn-small" onclick="addSocial()">+ Добавить соцсеть</button>
 
-        <button class="btn btn-primary" style="margin-top:20px;" onclick="saveAll()">💾 Сохранить изменения</button>
-
-        <!-- Публикация -->
-        <hr class="divider">
-        <span class="section-label">🌍 Поделиться с другими</span>
-        <div class="share-info">
-            <p>Опубликуй эту страницу, чтобы другие видели твои ссылки:</p>
-            <button class="btn-copy" onclick="publishAndShare()" style="margin-top:8px;">🚀 Опубликовать и скопировать ссылку</button>
-            <p style="font-size:10px;margin-top:6px;color:var(--sub);">
-                Данные будут закодированы в ссылку. Кто откроет её — увидит актуальную версию.
-            </p>
-        </div>
-
-        <button class="btn btn-outline" onclick="exportJSON()">📤 Скачать бэкап (JSON)</button>
-        <button class="btn btn-outline" onclick="importJSON()">📥 Загрузить бэкап</button>
-        <button class="btn btn-outline danger" onclick="resetAll()">🗑 Сбросить всё</button>
-        <p class="admin-footer">Данные хранятся локально в браузере</p>
+        <button class="btn btn-primary" style="margin-top:20px;" onclick="saveToSupabase()">💾 Сохранить в облако</button>
+        <p style="font-size:10px;color:var(--sub);text-align:center;margin-top:8px;">
+            Данные хранятся в Supabase и видны всем
+        </p>
     </div>
 
-    <!-- Модальное окно пароля -->
     <div class="modal-overlay" id="passwordModal">
         <div class="modal">
-            <h3>🔐 Вход в админку</h3>
-            <p>Введите пароль для доступа к редактированию</p>
-            <input type="password" id="passwordInput" placeholder="Пароль" maxlength="30" autocomplete="off">
+            <h3>🔐 Вход</h3>
+            <p>Введите пароль для редактирования</p>
+            <input type="password" id="passwordInput" placeholder="Пароль" maxlength="30">
             <div class="error-msg" id="passwordError">❌ Неверный пароль</div>
             <div class="modal-buttons">
                 <button class="btn-cancel" onclick="closePasswordModal()">Отмена</button>
@@ -869,24 +463,28 @@
         </div>
     </div>
 
-    <!-- Toast -->
     <div class="toast" id="toast"></div>
 
-    <!-- Font Awesome для иконок соцсетей -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
-        // ===== КОНФИГУРАЦИЯ =====
+        // ===== НАСТРОЙКИ SUPABASE =====
+        // Замени эти значения на свои из Supabase Dashboard → Settings → API
+        const SUPABASE_URL = 'https://qjgukzqxmdqjagkkywmq.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqZ3VrenF4bWRxamFna2t5d21xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI1OTAzNzAsImV4cCI6MjA5ODE2NjM3MH0.LpstJITV8Gtu_DxctFdrPeGtobhf890ous6qDyATmxo';
+        
         const ADMIN_PASSWORD = 'David';
         let isAdmin = false;
-        let isPublicMode = false; // true если страница открыта по share-ссылке
+        let supabase;
 
-        // ===== SUPABASE КОНФИГУРАЦИЯ =====
-const SUPABASE_URL = 'https://qjgukzqxmdqjagkkywmq.supabase.co';   // ← замени
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFqZ3VrenF4bWRxamFna2t5d21xIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI1OTAzNzAsImV4cCI6MjA5ODE2NjM3MH0.LpstJITV8Gtu_DxctFdrPeGtobhf890ous6qDyATmxo';                     // ← замени
+        // Инициализация Supabase
+        try {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        } catch (e) {
+            console.error('Supabase не инициализирован');
+        }
 
-const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        // ===== ДАННЫЕ ПО УМОЛЧАНИЮ =====
         const defaultData = {
             avatar: '',
             name: 'Твоё Имя',
@@ -903,7 +501,6 @@ const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             ]
         };
 
-        // Доступные платформы для соцсетей
         const platforms = [
             { value: 'telegram', label: 'Telegram', icon: 'fa-telegram' },
             { value: 'youtube', label: 'YouTube', icon: 'fa-youtube' },
@@ -920,106 +517,142 @@ const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
             { value: 'email', label: 'Email', icon: 'fa-envelope' },
         ];
 
-        let data = { ...defaultData };
+        let data = JSON.parse(JSON.stringify(defaultData));
 
-        // ===== ЗАГРУЗКА ДАННЫХ =====
-        async function loadData() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const encodedData = urlParams.get('d');
-    
-    if (encodedData) {
-        try {
-            const jsonStr = decompressData(encodedData);
-            const parsed = JSON.parse(jsonStr);
-            data = { ...defaultData, ...parsed };
-            isPublicMode = true;
-            document.getElementById('publicBadge').classList.add('show');
-            document.getElementById('adminEntryBtn').style.display = 'none';
-            return;
-        } catch (e) {}
-    }
-
-    // Загрузка из Supabase
-    try {
-        const { data: profile } = await supabase
-            .from('link_profiles')
-            .select('data')
-            .eq('id', 'main')
-            .single();
-
-        if (profile?.data) {
-            data = { ...defaultData, ...profile.data };
-        }
-    } catch (e) {
-        console.log('Supabase не доступен, используем localStorage');
-    }
-
-    // Fallback на localStorage
-    const saved = localStorage.getItem('mylinktree_data');
-    if (saved && !data.avatar) {   // если из supabase ничего не пришло
-        try {
-            const parsed = JSON.parse(saved);
-            data = { ...defaultData, ...parsed };
-        } catch (e) {}
-    }
-}
-
-        async function saveData() {
-    localStorage.setItem('mylinktree_data', JSON.stringify(data));
-    
-    // Сохраняем в облако
-    try {
-        await supabase
-            .from('link_profiles')
-            .upsert({ id: 'main', data: data }, { onConflict: 'id' });
-    } catch (e) {
-        console.error('Не удалось сохранить в облако', e);
-    }
-}
-
-        // ===== СЖАТИЕ ДАННЫХ ДЛЯ URL =====
-        function compressData(jsonStr) {
-            // Используем btoa + encodeURIComponent для безопасной передачи в URL
-            try {
-                return btoa(encodeURIComponent(jsonStr).replace(/%([0-9A-F]{2})/g, (match, p1) => {
-                    return String.fromCharCode('0x' + p1);
-                }));
-            } catch (e) {
-                // Fallback: просто btoa
-                return btoa(jsonStr);
+        // ===== ЗАГРУЗКА ИЗ SUPABASE =====
+        async function loadFromSupabase() {
+            if (!supabase) {
+                loadLocalFallback();
+                return;
             }
-        }
-
-        function decompressData(encoded) {
-            try {
-                return decodeURIComponent(atob(encoded).split('').map(c => {
-                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-                }).join(''));
-            } catch (e) {
-                // Fallback: просто atob
-                return atob(encoded);
-            }
-        }
-
-        // ===== ПУБЛИЧНЫЙ ВИД =====
-        function renderPublic() {
-            // Аватар
-            const avatarEl = document.getElementById('pubAvatar');
-            const avatarSrc = data.avatar || '';
             
-            if (avatarSrc) {
-                avatarEl.src = avatarSrc;
-                avatarEl.onerror = () => {
-                    avatarEl.src = generatePlaceholderAvatar();
-                };
-            } else {
-                avatarEl.src = generatePlaceholderAvatar();
+            try {
+                const { data: profile, error } = await supabase
+                    .from('profiles')
+                    .select('*')
+                    .eq('id', 1)
+                    .single();
+                
+                if (error) throw error;
+                
+                if (profile) {
+                    data = {
+                        avatar: profile.avatar || '',
+                        name: profile.name || '',
+                        bio: profile.bio || '',
+                        links: profile.links || [...defaultData.links],
+                        socials: profile.socials || [...defaultData.socials],
+                    };
+                }
+            } catch (e) {
+                console.log('Загрузка из Supabase не удалась:', e.message);
+                loadLocalFallback();
             }
+            
+            renderPublic();
+        }
+
+        function loadLocalFallback() {
+            const saved = localStorage.getItem('mylinktree_data');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    data = { ...defaultData, ...parsed };
+                } catch (e) {
+                    data = JSON.parse(JSON.stringify(defaultData));
+                }
+            }
+        }
+
+        // ===== СОХРАНЕНИЕ В SUPABASE =====
+        async function saveToSupabase() {
+            if (!supabase) {
+                showToast('❌ Supabase не подключён', true);
+                return;
+            }
+            
+            // Собираем данные из полей
+            collectFormData();
+            
+            // Сохраняем локально как резерв
+            localStorage.setItem('mylinktree_data', JSON.stringify(data));
+            
+            setSaveStatus('saving');
+            
+            try {
+                const { error } = await supabase
+                    .from('profiles')
+                    .upsert({
+                        id: 1,
+                        avatar: data.avatar,
+                        name: data.name,
+                        bio: data.bio,
+                        links: data.links,
+                        socials: data.socials,
+                        updated_at: new Date().toISOString(),
+                    }, { onConflict: 'id' });
+                
+                if (error) throw error;
+                
+                setSaveStatus('saved');
+                renderPublic();
+                showToast('✅ Сохранено в облако!');
+            } catch (e) {
+                console.error('Ошибка сохранения:', e);
+                setSaveStatus('error');
+                showToast('❌ Ошибка: ' + e.message, true);
+            }
+        }
+
+        function collectFormData() {
+            data.avatar = document.getElementById('editAvatar').value;
+            data.name = document.getElementById('editName').value;
+            data.bio = document.getElementById('editBio').value;
+
+            const linkRows = document.querySelectorAll('#editLinks .link-row');
+            data.links = [];
+            linkRows.forEach(row => {
+                const inputs = row.querySelectorAll('input');
+                data.links.push({ title: inputs[0].value, url: inputs[1].value });
+            });
+
+            const socialRows = document.querySelectorAll('#editSocials .social-row');
+            data.socials = [];
+            socialRows.forEach(row => {
+                const select = row.querySelector('select');
+                const input = row.querySelector('input');
+                data.socials.push({ platform: select.value, url: input.value });
+            });
+        }
+
+        function setSaveStatus(status) {
+            const dot = document.querySelector('#saveStatus .status-dot');
+            const text = document.querySelector('#saveStatus');
+            dot.className = 'status-dot ' + status;
+            if (status === 'saved') text.innerHTML = '<span class="status-dot saved"></span> Сохранено';
+            else if (status === 'saving') text.innerHTML = '<span class="status-dot saving"></span> Сохранение...';
+            else if (status === 'error') text.innerHTML = '<span class="status-dot error"></span> Ошибка';
+        }
+
+        // ===== ОТРИСОВКА =====
+        function renderPublic() {
+            const avatarEl = document.getElementById('pubAvatar');
+            if (data.avatar) {
+                avatarEl.src = data.avatar;
+            } else {
+                avatarEl.src = 'data:image/svg+xml,' + encodeURIComponent(
+                    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23333" width="100" height="100"/><text x="50" y="58" text-anchor="middle" fill="%23777" font-size="40" font-family="sans-serif">?</text></svg>'
+                );
+            }
+            avatarEl.onerror = () => {
+                avatarEl.src = 'data:image/svg+xml,' + encodeURIComponent(
+                    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23333" width="100" height="100"/><text x="50" y="58" text-anchor="middle" fill="%23777" font-size="40" font-family="sans-serif">?</text></svg>'
+                );
+            };
 
             document.getElementById('pubName').textContent = data.name || 'Имя';
             document.getElementById('pubBio').textContent = data.bio || '';
 
-            // Ссылки
             const linksDiv = document.getElementById('pubLinks');
             linksDiv.innerHTML = '';
             if (data.links && data.links.length > 0) {
@@ -1036,7 +669,6 @@ const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                 });
             }
 
-            // Соцсети
             const socialsDiv = document.getElementById('pubSocials');
             socialsDiv.innerHTML = '';
             if (data.socials && data.socials.length > 0) {
@@ -1054,27 +686,13 @@ const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                     }
                 });
             }
-            
-            // Обновляем превью в админке если открыта
-            if (document.getElementById('adminPanel').classList.contains('active')) {
-                updateAvatarPreview();
-            }
         }
 
-        function generatePlaceholderAvatar() {
-            return 'data:image/svg+xml,' + encodeURIComponent(
-                '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23333" width="100" height="100"/><text x="50" y="58" text-anchor="middle" fill="%23777" font-size="40" font-family="sans-serif">?</text></svg>'
-            );
-        }
-
-        // ===== АДМИН-ПАНЕЛЬ =====
         function renderAdmin() {
             document.getElementById('editAvatar').value = data.avatar || '';
-            updateAvatarPreview();
             document.getElementById('editName').value = data.name || '';
             document.getElementById('editBio').value = data.bio || '';
 
-            // Ссылки
             const editLinksDiv = document.getElementById('editLinks');
             editLinksDiv.innerHTML = '';
             if (!data.links) data.links = [];
@@ -1082,14 +700,13 @@ const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                 const row = document.createElement('div');
                 row.className = 'link-row';
                 row.innerHTML = `
-                    <input type="text" placeholder="Название" value="${escapeAttr(link.title || '')}" data-index="${i}" data-field="title" maxlength="80">
-                    <input type="url" placeholder="https://..." value="${escapeAttr(link.url || '')}" data-index="${i}" data-field="url">
-                    <button class="del-btn" onclick="deleteLink(${i})" title="Удалить" aria-label="Удалить ссылку">×</button>
+                    <input type="text" placeholder="Название" value="${esc(link.title || '')}" data-index="${i}" data-field="title" maxlength="80">
+                    <input type="url" placeholder="https://..." value="${esc(link.url || '')}" data-index="${i}" data-field="url">
+                    <button class="del-btn" onclick="deleteLink(${i})">×</button>
                 `;
                 editLinksDiv.appendChild(row);
             });
 
-            // Соцсети
             const editSocialsDiv = document.getElementById('editSocials');
             editSocialsDiv.innerHTML = '';
             if (!data.socials) data.socials = [];
@@ -1101,286 +718,46 @@ const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
                 ).join('');
                 row.innerHTML = `
                     <select data-index="${i}" data-field="platform">${options}</select>
-                    <input type="url" placeholder="https://..." value="${escapeAttr(s.url || '')}" data-index="${i}" data-field="url">
-                    <button class="del-btn" onclick="deleteSocial(${i})" title="Удалить" aria-label="Удалить соцсеть">×</button>
+                    <input type="url" placeholder="https://..." value="${esc(s.url || '')}" data-index="${i}" data-field="url">
+                    <button class="del-btn" onclick="deleteSocial(${i})">×</button>
                 `;
                 editSocialsDiv.appendChild(row);
             });
 
-            // Автосохранение при вводе
-            document.querySelectorAll('#editLinks input, #editSocials input, #editSocials select').forEach(el => {
-                el.addEventListener('input', autoSaveField);
-            });
-            ['editAvatar', 'editName', 'editBio'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.addEventListener('input', autoSaveField);
-            });
+            setSaveStatus('saved');
         }
 
-        function updateAvatarPreview() {
-            const preview = document.getElementById('avatarPreviewSmall');
-            if (data.avatar) {
-                preview.src = data.avatar;
-            } else {
-                preview.src = generatePlaceholderAvatar();
-            }
+        function esc(s) {
+            return s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         }
 
-        function escapeAttr(str) {
-            return str.replace(/&/g, '&amp;').replace(/"/g, '&quot;')
-                      .replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        }
-
-        async function autoSaveField(e) {
-            const el = e.target;
-            const index = el.dataset.index;
-            const field = el.dataset.field;
-
-            if (index !== undefined && field) {
-                const parent = el.closest('#editLinks') ? 'links' : 'socials';
-                if (!data[parent][index]) return;
-                data[parent][index][field] = el.value;
-            } else if (el.id === 'editAvatar') {
-                data.avatar = el.value;
-            } else if (el.id === 'editName') {
-                data.name = el.value;
-            } else if (el.id === 'editBio') {
-                data.bio = el.value;
-            }
-            saveData();
-            renderPublic();
-        }
-
-        // ===== ЗАГРУЗКА АВАТАРА С УСТРОЙСТВА =====
-        function handleAvatarUpload(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            // Проверка размера (макс 2MB)
-            if (file.size > 2 * 1024 * 1024) {
-                showToast('❌ Файл слишком большой (макс 2MB)', true);
-                event.target.value = '';
-                return;
-            }
-
-            // Проверка типа
-            if (!file.type.startsWith('image/')) {
-                showToast('❌ Выберите изображение', true);
-                event.target.value = '';
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const base64 = e.target.result;
-                
-                // Сжимаем если нужно
-                const img = new Image();
-                img.onload = () => {
-                    let canvas = document.createElement('canvas');
-                    let ctx = canvas.getContext('2d');
-                    
-                    // Максимальный размер 400x400
-                    let width = img.width;
-                    let height = img.height;
-                    const maxSize = 400;
-                    
-                    if (width > maxSize || height > maxSize) {
-                        if (width > height) {
-                            height = (height / width) * maxSize;
-                            width = maxSize;
-                        } else {
-                            width = (width / height) * maxSize;
-                            height = maxSize;
-                        }
-                    }
-                    
-                    canvas.width = width;
-                    canvas.height = height;
-                    ctx.drawImage(img, 0, 0, width, height);
-                    
-                    // Сжатие JPEG quality 0.8
-                    data.avatar = canvas.toDataURL('image/jpeg', 0.8);
-                    document.getElementById('editAvatar').value = '[загружено с устройства]';
-                    updateAvatarPreview();
-                    saveData();
-                    renderPublic();
-                    showToast('📷 Фото загружено!');
-                };
-                img.src = base64;
-            };
-            reader.readAsDataURL(file);
-            
-            // Сброс input для повторной загрузки того же файла
-            event.target.value = '';
-        }
-
-        function removeAvatar() {
-            data.avatar = '';
-            document.getElementById('editAvatar').value = '';
-            updateAvatarPreview();
-            saveData();
-            renderPublic();
-            showToast('🗑 Аватар удалён');
-        }
-
-        // ===== РАБОТА С ССЫЛКАМИ И СОЦСЕТЯМИ =====
         function addLink() {
-            if (!data.links) data.links = [];
             data.links.push({ title: '', url: '' });
-            saveData();
-            renderPublic();
             renderAdmin();
-            setTimeout(() => {
-                const lastRow = document.querySelector('#editLinks .link-row:last-child');
-                if (lastRow) lastRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 100);
         }
 
-        function deleteLink(index) {
-            if (data.links.length <= 1) {
-                showToast('Должна быть хотя бы одна ссылка', true);
-                return;
-            }
-            data.links.splice(index, 1);
-            saveData();
-            renderPublic();
+        function deleteLink(i) {
+            data.links.splice(i, 1);
             renderAdmin();
         }
 
         function addSocial() {
-            if (!data.socials) data.socials = [];
             data.socials.push({ platform: 'telegram', url: '' });
-            saveData();
-            renderPublic();
-            renderAdmin();
-            setTimeout(() => {
-                const lastRow = document.querySelector('#editSocials .social-row:last-child');
-                if (lastRow) lastRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 100);
-        }
-
-        function deleteSocial(index) {
-            data.socials.splice(index, 1);
-            saveData();
-            renderPublic();
             renderAdmin();
         }
 
-    async    function saveAll() {
-            data.name = document.getElementById('editName').value;
-            data.bio = document.getElementById('editBio').value;
-            
-            // Аватар из URL если вставлен
-            const avatarUrl = document.getElementById('editAvatar').value;
-            if (avatarUrl && avatarUrl !== '[загружено с устройства]' && avatarUrl.startsWith('http')) {
-                data.avatar = avatarUrl;
-            }
-            // Иначе оставляем то что уже в data.avatar (мог быть загружен файл)
-
-            const linkRows = document.querySelectorAll('#editLinks .link-row');
-            data.links = [];
-            linkRows.forEach(row => {
-                const inputs = row.querySelectorAll('input');
-                data.links.push({ title: inputs[0].value, url: inputs[1].value });
-            });
-
-            const socialRows = document.querySelectorAll('#editSocials .social-row');
-            data.socials = [];
-            socialRows.forEach(row => {
-                const select = row.querySelector('select');
-                const input = row.querySelector('input');
-                data.socials.push({ platform: select.value, url: input.value });
-            });
-
-            saveData();
-            renderPublic();
-            showToast('✅ Сохранено!');
+        function deleteSocial(i) {
+            data.socials.splice(i, 1);
+            renderAdmin();
         }
 
-        // ===== ПУБЛИКАЦИЯ =====
-        async function publishAndShare() {
-            // Сначала сохраняем
-            saveAll();
-            
-            // Создаём чистый объект данных без base64 если он огромный
-            const cleanData = JSON.parse(JSON.stringify(data));
-            
-            // Если аватар это base64 и он больше 50KB, сжимаем
-            if (cleanData.avatar && cleanData.avatar.startsWith('data:image')) {
-                if (cleanData.avatar.length > 50000) {
-                    // Создаём маленькую версию
-                    const img = new Image();
-                    img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        const ctx = canvas.getContext('2d');
-                        canvas.width = 150;
-                        canvas.height = 150;
-                        ctx.drawImage(img, 0, 0, 150, 150);
-                        cleanData.avatar = canvas.toDataURL('image/jpeg', 0.5);
-                        generateShareUrl(cleanData);
-                    };
-                    img.src = cleanData.avatar;
-                    return;
-                }
-            }
-            
-            generateShareUrl(cleanData);
-        }
-
-        function generateShareUrl(cleanData) {
-            try {
-                const jsonStr = JSON.stringify(cleanData);
-                const encoded = compressData(jsonStr);
-                
-                // Формируем URL
-                const baseUrl = window.location.origin + window.location.pathname;
-                const shareUrl = `${baseUrl}?d=${encodeURIComponent(encoded)}`;
-                
-                // Копируем
-                copyToClipboard(shareUrl);
-                showToast('🔗 Ссылка скопирована! Отправь её друзьям');
-            } catch (e) {
-                showToast('❌ Ошибка: данные слишком большие. Попробуйте уменьшить фото.', true);
-            }
-        }
-
-        function copyToClipboard(text) {
-            if (navigator.clipboard && window.isSecureContext) {
-                navigator.clipboard.writeText(text).catch(() => {
-                    fallbackCopy(text);
-                });
-            } else {
-                fallbackCopy(text);
-            }
-        }
-
-        function fallbackCopy(text) {
-            const textArea = document.createElement('textarea');
-            textArea.value = text;
-            textArea.style.position = 'fixed';
-            textArea.style.left = '-9999px';
-            textArea.style.top = '-9999px';
-            document.body.appendChild(textArea);
-            textArea.focus();
-            textArea.select();
-            try {
-                document.execCommand('copy');
-            } catch (err) {
-                showToast('❌ Не удалось скопировать', true);
-            }
-            document.body.removeChild(textArea);
-        }
-
-        // ===== УПРАВЛЕНИЕ АДМИНКОЙ =====
+        // ===== АДМИНКА =====
         function openPasswordModal() {
             document.getElementById('passwordModal').classList.add('active');
             document.getElementById('passwordInput').value = '';
             document.getElementById('passwordError').classList.remove('show');
             document.body.style.overflow = 'hidden';
-            setTimeout(() => {
-                document.getElementById('passwordInput').focus();
-            }, 150);
+            setTimeout(() => document.getElementById('passwordInput').focus(), 150);
         }
 
         function closePasswordModal() {
@@ -1389,27 +766,24 @@ const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         }
 
         function checkPassword() {
-            const input = document.getElementById('passwordInput').value;
-            if (input === ADMIN_PASSWORD) {
+            if (document.getElementById('passwordInput').value === ADMIN_PASSWORD) {
                 isAdmin = true;
                 closePasswordModal();
                 openAdmin();
-                showToast('🔓 Доступ разрешён');
             } else {
-                const errorEl = document.getElementById('passwordError');
-                errorEl.classList.add('show');
+                const err = document.getElementById('passwordError');
+                err.classList.add('show');
                 document.getElementById('passwordInput').value = '';
                 document.getElementById('passwordInput').focus();
-                errorEl.style.animation = 'none';
-                errorEl.offsetHeight;
-                errorEl.style.animation = 'shake 0.3s ease';
+                err.style.animation = 'none';
+                err.offsetHeight;
+                err.style.animation = 'shake 0.3s ease';
             }
         }
 
         function openAdmin() {
             document.getElementById('adminPanel').classList.add('active');
             document.getElementById('publicView').style.display = 'none';
-            document.getElementById('publicBadge').classList.remove('show');
             renderAdmin();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -1417,102 +791,44 @@ const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         function closeAdmin() {
             document.getElementById('adminPanel').classList.remove('active');
             document.getElementById('publicView').style.display = '';
-            if (isPublicMode) {
-                document.getElementById('publicBadge').classList.add('show');
-            }
             renderPublic();
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function logout() {
-            if (confirm('Выйти из режима редактирования?')) {
-                isAdmin = false;
-                closeAdmin();
-                showToast('🔒 Вы вышли из админки');
-            }
-        }
-
-        // ===== ЭКСПОРТ / ИМПОРТ / СБРОС =====
-        function exportJSON() {
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'mylinktree_backup.json';
-            a.click();
-            URL.revokeObjectURL(url);
-            showToast('📤 Бэкап скачан');
-        }
-
-        function importJSON() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = '.json';
-            input.onchange = (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = (ev) => {
-                    try {
-                        const imported = JSON.parse(ev.target.result);
-                        data = { ...defaultData, ...imported };
-                        if (!Array.isArray(data.links)) data.links = [];
-                        if (!Array.isArray(data.socials)) data.socials = [];
-                        saveData();
-                        renderPublic();
-                        renderAdmin();
-                        showToast('📥 Бэкап загружен!');
-                    } catch (err) {
-                        showToast('❌ Ошибка в файле', true);
-                    }
-                };
-                reader.readAsText(file);
-            };
-            input.click();
-        }
-
-        function resetAll() {
-            if (confirm('Точно сбросить ВСЕ данные? Это действие нельзя отменить.')) {
-                data = JSON.parse(JSON.stringify(defaultData));
-                saveData();
-                renderPublic();
-                renderAdmin();
-                showToast('🗑 Всё сброшено');
-            }
-        }
-
-        // ===== TOAST =====
         function showToast(msg, isError = false) {
             const toast = document.getElementById('toast');
             toast.textContent = msg;
             toast.className = 'toast' + (isError ? ' error' : '');
             toast.classList.add('show');
             clearTimeout(toast._timeout);
-            toast._timeout = setTimeout(() => toast.classList.remove('show'), 2000);
+            toast._timeout = setTimeout(() => toast.classList.remove('show'), 2500);
         }
 
         // ===== ИНИЦИАЛИЗАЦИЯ =====
         document.addEventListener('DOMContentLoaded', () => {
+            loadFromSupabase();
+            
             document.getElementById('passwordInput').addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') checkPassword();
             });
+            
             document.getElementById('passwordModal').addEventListener('click', (e) => {
                 if (e.target === document.getElementById('passwordModal')) closePasswordModal();
             });
-            
-            loadData().then(() => {
-                renderPublic();
-            });
-            
-            // Если это share-ссылка и нет данных в URL, скрываем админ-кнопку
-            if (!isPublicMode) {
-                const urlParams = new URLSearchParams(window.location.search);
-                if (urlParams.get('d')) {
-                    isPublicMode = true;
-                    document.getElementById('publicBadge').classList.add('show');
-                    document.getElementById('adminEntryBtn').style.display = 'none';
+
+            // Автосохранение в localStorage при редактировании
+            ['editAvatar', 'editName', 'editBio'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('input', () => {
+                        collectFormData();
+                        localStorage.setItem('mylinktree_data', JSON.stringify(data));
+                        setSaveStatus('saving');
+                        clearTimeout(window._saveTimeout);
+                        window._saveTimeout = setTimeout(() => setSaveStatus('saved'), 1500);
+                    });
                 }
-            }
+            });
         });
     </script>
 </body>
