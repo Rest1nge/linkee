@@ -60,7 +60,7 @@
       margin: 0 auto;
     }
 
-    /* Ссылки с иконками (изменения из второго кода) */
+    /* Ссылки с иконками */
     .links {
       display: flex;
       flex-direction: column;
@@ -71,6 +71,7 @@
     .link-item {
       display: flex;
       align-items: center;
+      justify-content: center; /* ← Центрируем все содержимое */
       gap: 14px;
       padding: 18px 24px;
       background: rgba(255, 255, 255, 0.1);
@@ -86,6 +87,7 @@
       text-align: center;
       letter-spacing: 0.2px;
       box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      position: relative;
     }
 
     .link-item:hover {
@@ -99,6 +101,17 @@
       transform: scale(0.98);
     }
 
+    /* Контейнер для иконок (слева) */
+    .link-icons-wrapper {
+      display: flex;
+      flex-direction: column; /* ← Вертикальное расположение */
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+      position: absolute;
+      left: 20px;
+    }
+
     .link-icon {
       width: 28px;
       height: 28px;
@@ -109,8 +122,9 @@
     }
 
     .link-text {
-      flex: 1;
-      text-align: left;
+      text-align: center;
+      font-size: 1rem;
+      padding: 0 40px; /* ← Отступы для текста, чтобы не наезжал на иконки */
     }
 
     /* Брендинг снизу */
@@ -125,7 +139,7 @@
       font-weight: 500;
     }
 
-    /* Кнопка админа - заметная но сдержанная */
+    /* Кнопка админа */
     .admin-btn {
         display: block;
         margin: 28px auto 0;
@@ -264,7 +278,7 @@
       display: none;
     }
 
-    /* Редактор ссылок (обновлён для поля иконки) */
+    /* Редактор ссылок */
     .link-edit-row {
       display: flex;
       gap: 8px;
@@ -285,7 +299,7 @@
     }
 
     .link-edit-row input:first-child {
-      flex: 1 0 100%; /* Поле иконки занимает всю ширину */
+      flex: 1 0 100%;
       margin-bottom: 6px;
     }
 
@@ -442,7 +456,7 @@
       const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       const PROFILE_ID = 1;
 
-      // Обновлённые дефолтные данные (с иконками)
+      // Обновлённые дефолтные данные
       const defaultData = {
         name: 'Ваше имя',
         bio: 'Краткое описание профиля',
@@ -484,7 +498,6 @@
             appData.bio = row.bio || defaultData.bio;
             appData.avatar = row.avatar || '';
             appData.links = row.links || defaultData.links;
-            // Кешируем
             localStorage.setItem('linkpage_cache', JSON.stringify(appData));
           } else {
             console.log('Запись не найдена, создаём новую...');
@@ -526,7 +539,7 @@
         }
       }
 
-      // ========== РЕНДЕР ПУБЛИЧНОЙ СТРАНИЦЫ (с иконками) ==========
+      // ========== РЕНДЕР ПУБЛИЧНОЙ СТРАНИЦЫ ==========
       function renderPublic() {
         avatarImg.src = appData.avatar || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2296%22 height=%2296%22%3E%3Ccircle cx=%2248%22 cy=%2248%22 r=%2248%22 fill=%22%23667eea%22/%3E%3Ctext x=%2248%22 y=%2266%22 font-size=%2248%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22sans-serif%22%3E?%3C/text%3E%3C/svg%3E';
         displayName.textContent = appData.name;
@@ -541,11 +554,30 @@
             a.target = '_blank';
             a.rel = 'noopener noreferrer';
 
-            // Используем innerHTML для вставки иконки и текста
-            a.innerHTML = `
-              ${link.icon ? `<img class="link-icon" src="${escapeHtml(link.icon)}" alt="">` : '<div class="link-icon" style="background:#666;"></div>'}
-              <span class="link-text">${escapeHtml(link.title || 'Ссылка')}</span>
-            `;
+            // Контейнер для иконок (слева)
+            const iconsWrapper = document.createElement('div');
+            iconsWrapper.className = 'link-icons-wrapper';
+            
+            if (link.icon) {
+              const img = document.createElement('img');
+              img.className = 'link-icon';
+              img.src = link.icon;
+              img.alt = '';
+              iconsWrapper.appendChild(img);
+            } else {
+              const div = document.createElement('div');
+              div.className = 'link-icon';
+              div.style.background = '#666';
+              iconsWrapper.appendChild(div);
+            }
+
+            // Текст по центру
+            const textSpan = document.createElement('span');
+            textSpan.className = 'link-text';
+            textSpan.textContent = link.title || 'Ссылка';
+
+            a.appendChild(iconsWrapper);
+            a.appendChild(textSpan);
             linksContainer.appendChild(a);
           });
         }
@@ -557,7 +589,7 @@
         renderLinksEditor();
       }
 
-      // ========== РЕДАКТОР ССЫЛОК (с полем иконки) ==========
+      // ========== РЕДАКТОР ССЫЛОК ==========
       function renderLinksEditor() {
         linksEditor.innerHTML = '';
         appData.links.forEach((link, index) => {
