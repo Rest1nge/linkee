@@ -60,7 +60,7 @@
       margin: 0 auto;
     }
 
-    /* Ссылки в стиле Linktree */
+    /* Ссылки с иконками (изменения из второго кода) */
     .links {
       display: flex;
       flex-direction: column;
@@ -71,7 +71,7 @@
     .link-item {
       display: flex;
       align-items: center;
-      justify-content: center;
+      gap: 14px;
       padding: 18px 24px;
       background: rgba(255, 255, 255, 0.1);
       backdrop-filter: blur(10px);
@@ -97,6 +97,20 @@
 
     .link-item:active {
       transform: scale(0.98);
+    }
+
+    .link-icon {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+      border-radius: 6px;
+      object-fit: contain;
+      background: rgba(255, 255, 255, 0);
+    }
+
+    .link-text {
+      flex: 1;
+      text-align: left;
     }
 
     /* Брендинг снизу */
@@ -250,7 +264,7 @@
       display: none;
     }
 
-    /* Редактор ссылок */
+    /* Редактор ссылок (обновлён для поля иконки) */
     .link-edit-row {
       display: flex;
       gap: 8px;
@@ -271,7 +285,8 @@
     }
 
     .link-edit-row input:first-child {
-      flex: 1.2;
+      flex: 1 0 100%; /* Поле иконки занимает всю ширину */
+      margin-bottom: 6px;
     }
 
     .remove-link-btn {
@@ -416,7 +431,8 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+  </script>
   <script>
     (function() {
       // ========== КОНФИГУРАЦИЯ SUPABASE ==========
@@ -426,13 +442,14 @@
       const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       const PROFILE_ID = 1;
 
+      // Обновлённые дефолтные данные (с иконками)
       const defaultData = {
         name: 'Ваше имя',
         bio: 'Краткое описание профиля',
         avatar: '',
         links: [
-          { title: 'Мой сайт', url: 'https://example.com' },
-          { title: 'Telegram', url: 'https://t.me' },
+          { title: 'Мой сайт', url: 'https://example.com', icon: 'https://cdn-icons-png.flaticon.com/512/5968/5968890.png' },
+          { title: 'Telegram', url: 'https://t.me', icon: 'https://cdn-icons-png.flaticon.com/512/2111/2111646.png' },
         ]
       };
 
@@ -461,7 +478,6 @@
 
           if (error) throw error;
 
-          // ИСПРАВЛЕНИЕ: проверяем, есть ли данные
           if (data && data.length > 0) {
             const row = data[0];
             appData.name = row.name || defaultData.name;
@@ -471,7 +487,6 @@
             // Кешируем
             localStorage.setItem('linkpage_cache', JSON.stringify(appData));
           } else {
-            // Если записи нет — создаем с дефолтными данными
             console.log('Запись не найдена, создаём новую...');
             await saveToDB();
           }
@@ -511,7 +526,7 @@
         }
       }
 
-      // ========== РЕНДЕР ==========
+      // ========== РЕНДЕР ПУБЛИЧНОЙ СТРАНИЦЫ (с иконками) ==========
       function renderPublic() {
         avatarImg.src = appData.avatar || 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2296%22 height=%2296%22%3E%3Ccircle cx=%2248%22 cy=%2248%22 r=%2248%22 fill=%22%23667eea%22/%3E%3Ctext x=%2248%22 y=%2266%22 font-size=%2248%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22sans-serif%22%3E?%3C/text%3E%3C/svg%3E';
         displayName.textContent = appData.name;
@@ -525,7 +540,12 @@
             a.href = link.url || '#';
             a.target = '_blank';
             a.rel = 'noopener noreferrer';
-            a.textContent = link.title || 'Ссылка';
+
+            // Используем innerHTML для вставки иконки и текста
+            a.innerHTML = `
+              ${link.icon ? `<img class="link-icon" src="${escapeHtml(link.icon)}" alt="">` : '<div class="link-icon" style="background:#666;"></div>'}
+              <span class="link-text">${escapeHtml(link.title || 'Ссылка')}</span>
+            `;
             linksContainer.appendChild(a);
           });
         }
@@ -537,12 +557,14 @@
         renderLinksEditor();
       }
 
+      // ========== РЕДАКТОР ССЫЛОК (с полем иконки) ==========
       function renderLinksEditor() {
         linksEditor.innerHTML = '';
         appData.links.forEach((link, index) => {
           const row = document.createElement('div');
           row.className = 'link-edit-row';
           row.innerHTML = `
+            <input type="text" placeholder="Иконка (URL)" value="${escapeHtml(link.icon || '')}" data-index="${index}" data-field="icon">
             <input type="text" placeholder="Название" value="${escapeHtml(link.title || '')}" data-index="${index}" data-field="title">
             <input type="text" placeholder="URL" value="${escapeHtml(link.url || '')}" data-index="${index}" data-field="url">
             <button class="remove-link-btn" data-index="${index}">Удалить</button>
@@ -612,7 +634,7 @@
       document.getElementById('logoutAdminBtn').addEventListener('click', showPublic);
 
       document.getElementById('addLinkBtn').addEventListener('click', () => {
-        appData.links.push({ title: '', url: '' });
+        appData.links.push({ title: '', url: '', icon: '' });
         renderLinksEditor();
       });
 
